@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>iQueensu</title>
+    <link>http://iQueensu.ca/</link>
+    <description>Recent content on iQueensu</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 17 Oct 2018 18:17:21 -0400</lastBuildDate>
+    
+	<atom:link href="http://iQueensu.ca/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>About</title>
+      <link>http://iQueensu.ca/about/</link>
+      <pubDate>Wed, 17 Oct 2018 18:17:21 -0400</pubDate>
+      
+      <guid>http://iQueensu.ca/about/</guid>
+      <description> iQueensu 一个女王大学中文门户网站 已有功能 BBS 作者  Sky Ricky Somion DLing Parthas  </description>
+    </item>
+    
+    <item>
+      <title>First</title>
+      <link>http://iQueensu.ca/post/first/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://iQueensu.ca/post/first/</guid>
+      <description> iQueensu 一个女王大学中文门户网站 已有功能 BBS 作者  Sky Ricky Somion DLing Parthas  </description>
+    </item>
+    
+  </channel>
+</rss>
