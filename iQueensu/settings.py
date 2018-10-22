@@ -40,8 +40,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'iQueensu.apps.test_apps.test_app'
-]
+    'rest_framework',
+    'QAuth',]
+
+AUTH_USER_MODEL = 'QAuth.CustomUser'
+
+    #'indexPage.apps.indexConfig',
+
+
+# register our apps here ^^
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
