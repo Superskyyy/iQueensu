@@ -19,18 +19,14 @@ from django.conf.urls import include, url
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-
     path('indexPage/',include('indexPage.urls')),
     path('qapi_v0/',include('QAPI.urls')),
-
 ]
 
 #Add URL maps to redirect the base URL to our application
 from django.views.generic import RedirectView
 urlpatterns += [
     path('', RedirectView.as_view(url='/indexPage/')),
-    
-    
     ]
 
 # Use static() to add url mapping to serve static files during development (only)
