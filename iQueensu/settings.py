@@ -15,7 +15,7 @@ import sys
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.insert(0, os.path.join(BASE_DIR, 'apps\\test_apps'))
+#sys.path.insert(0, os.path.join(BASE_DIR, 'apps\\test_apps'))
 # print(sys.path)
 
 
@@ -45,11 +45,12 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'rest_auth',
-    'QAuth',]
+    'QUser'
+    ]
+    
+AUTH_USER_MODEL = 'QUser.CustomUser'
 
-AUTH_USER_MODEL = 'QAuth.CustomUser'
 
-    #'indexPage.apps.indexConfig',
 
 
 # register our apps here ^^
@@ -138,5 +139,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATIC_ROOT = os.path.join(BASE_DIR, "static\\")
-
+#STATIC_ROOT = os.path.join(BASE_DIR, "static\\")
+STATIC_ROOT = "/root/iQueensu/static"
+#STATICFILES_DIRS = [
+ #           os.path.join(BASE_DIR, "static"),
+  #          ]

@@ -17,19 +17,17 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls import include, url
 
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-
-    path('indexPage/',include('indexPage.urls'))
-
+    path('indexPage/',include('indexPage.urls')),
 ]
 
 #Add URL maps to redirect the base URL to our application
 from django.views.generic import RedirectView
 urlpatterns += [
     path('', RedirectView.as_view(url='/indexPage/')),
-    
-    
     ]
 
 # Use static() to add url mapping to serve static files during development (only)
