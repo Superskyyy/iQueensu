@@ -17,11 +17,10 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls import include, url
 
-
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('indexPage/',include('indexPage.urls')),
+    path('qapi_v0/',include('QAPI.urls')),
 ]
 
 #Add URL maps to redirect the base URL to our application
