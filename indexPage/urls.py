@@ -5,4 +5,5 @@ from . import views
 app_name = 'indexPage'
 urlpatterns = [
     path('', views.index, name='index'),
+    path('qhome', views.qhome, name='qhome'),
 ]
