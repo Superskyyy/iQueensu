@@ -8,3 +8,6 @@ def index(request):
         return render(request,'indexPage/index.html', {'dev': { 'test': True, 'api': settings.REST_API_ADDRESS}})
     else:
         return HttpResponse("Coming soon", status=418)
+
+def qhome(request):
+    return render(request,'indexPage/qhome/qhome.html')
