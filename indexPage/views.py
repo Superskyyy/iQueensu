@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.conf import settings
+import json
 # Create your views here.
 
 def index(request):
@@ -10,4 +11,8 @@ def index(request):
         return HttpResponse("Coming soon", status=418)
 
 def qhome(request):
-    return render(request,'indexPage/qhome/qhome.html')
+    jsondata = json.dumps({
+        'api_addr': settings.REST_API_ADDRESS
+    })
+    print(jsondata)
+    return render(request,'indexPage/qhome/qhome.html', {'qhome': { 'data': jsondata }})

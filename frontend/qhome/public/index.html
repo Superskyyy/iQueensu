@@ -21,6 +21,10 @@
     <title>React App</title>
   </head>
   <body>
+    <script>
+        var t_serv_data = '{{ qhome.data|escapejs }}'
+        window.__SVR_DATA__ = JSON.parse(t_serv_data);
+    </script>
     <noscript>
       You need to enable JavaScript to run this app.
     </noscript>
