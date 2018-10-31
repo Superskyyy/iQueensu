@@ -1,0 +1,14 @@
+.q-post{
+    border: 2px dotted #000;
+    width:800px;
+}
+.q-post-date{
+    font-size: 0.8em;
+}
+.q-post-author{
+    font-family: "Arial", "Verdana", "Times New Roman", Times, serif;
+}
+.q-post-text{
+    font-family: "Arial", "Verdana", "Times New Roman", Times, serif;
+    font-size:1.5em;
+}
