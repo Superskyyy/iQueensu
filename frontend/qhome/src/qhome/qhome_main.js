@@ -25,7 +25,7 @@ class QPostList extends React.Component{
         }
     }
     componentDidMount(){
-        fetch("/" + window.__SVR_DATA__.api_addr + "/posts/").then(results => {
+        fetch(window.__SVR_DATA__.api_addr + "/posts/").then(results => {
             return results.json();
         }).then(data => {
             var i = 0;

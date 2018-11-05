@@ -26,8 +26,20 @@
   </head>
   <body>
     <script>
-        var t_serv_data = '{{ qhome.data|escapejs }}'
-        window.__SVR_DATA__ = JSON.parse(t_serv_data);
+        var t_serv_data = '{{ qhome.data|escapejs }}';
+        // If this file is not served by django template system
+        var t_serv_data_array = ["{", "{", " qhome.data|escapejs ", "}", "}"];
+        if (t_serv_data == t_serv_data_array.join("")){
+            window.__SVR_DATA__ = {
+                "api_addr": "http://localhost:8000/qapi_v0",
+                "debug": true,
+            };
+            console.log("running debug mode");
+        }
+        else{
+            window.__SVR_DATA__ = JSON.parse(t_serv_data);
+            window.__SVR_DATA__["debug"] = false;
+        }
     </script>
     <noscript>
       You need to enable JavaScript to run this app.
