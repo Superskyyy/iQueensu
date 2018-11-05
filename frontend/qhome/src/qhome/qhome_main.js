@@ -28,11 +28,10 @@ class QPostList extends React.Component{
         fetch(window.__SVR_DATA__.api_addr + "/posts/").then(results => {
             return results.json();
         }).then(data => {
-            var i = 0;
             let posts = data.results.map((data) => {
                 return(
                     <QPost
-                        key={i++}
+                        key={data.post_id}
                         title={data.post_title}
                         date={data.post_date}
                         author={data.post_author}
