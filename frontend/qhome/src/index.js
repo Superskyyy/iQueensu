@@ -2,8 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import './qhome/qhome_main.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import QHome from './qhome/qhome_main';
 import * as serviceWorker from './serviceWorker';
+
+
 
 ReactDOM.render(<QHome />, document.getElementById('root'));
 
