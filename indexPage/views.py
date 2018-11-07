@@ -12,7 +12,7 @@ def index(request):
 
 def qhome(request):
     jsondata = json.dumps({
-        'api_addr': settings.REST_API_ADDRESS
+        'api_addr': "/" + settings.REST_API_ADDRESS
     })
     print(jsondata)
     return render(request,'indexPage/qhome/qhome.html', {'qhome': { 'data': jsondata }})

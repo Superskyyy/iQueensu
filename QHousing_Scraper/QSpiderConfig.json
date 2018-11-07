@@ -1,0 +1,11 @@
+{
+  "_comment": "DO NOT INCLUDE THIS FILE IN RELEASE BRANCH",
+  "taskdb": "mongodb+taskdb://root:iqueensu@35.183.130.225:27017/qhousing_task_dev?authSource=admin",
+  "projectdb": "mongodb+projectdb://root:iqueensu@35.183.130.225:27017/qhousing_project_dev?authSource=admin",
+  "resultdb": "mongodb+resultdb://root:iqueensu@35.183.130.225:27017/qhousing_result_dev?authSource=admin",
+  "webui": {
+    "username": "root",
+    "password": "iQueensu.com123",
+    "need-auth": true
+  }
+}

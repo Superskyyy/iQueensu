@@ -1,5 +1,5 @@
 import React from 'react';
-import App from "../App";
+import { Button } from 'reactstrap';
 
 class QPost extends React.Component {
       render() {
@@ -12,6 +12,15 @@ class QPost extends React.Component {
             <div className="q-post-text">
                 {this.props.text}
             </div>
+            <Button
+                                        tag="a"
+                                        color="success"
+                                        size="large"
+                                        href="http://reactstrap.github.io"
+                                        target="_blank"
+                                    >
+                                        Test ReactStrap
+                                    </Button>
             <hr/>
         </div>
         );
@@ -25,14 +34,13 @@ class QPostList extends React.Component{
         }
     }
     componentDidMount(){
-        fetch("/" + window.__SVR_DATA__.api_addr + "/posts/").then(results => {
+        fetch(window.__SVR_DATA__.api_addr + "/posts/").then(results => {
             return results.json();
         }).then(data => {
-            var i = 0;
             let posts = data.results.map((data) => {
                 return(
                     <QPost
-                        key={i++}
+                        key={data.post_id}
                         title={data.post_title}
                         date={data.post_date}
                         author={data.post_author}
