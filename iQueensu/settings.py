@@ -28,6 +28,9 @@ SECRET_KEY = 'l=zqe8o+tt8v6fyd*q-0+1_+_1440a$vmi--5vomh*j1jy4p8w'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# Turn LOCAL_DEBUG on if you want to debug frontend using npm start
+LOCAL_DEBUG = False
+
 ALLOWED_HOSTS = ["*"]
 
 
@@ -54,7 +57,13 @@ INSTALLED_APPS += [
     'rest_auth.registration',
     'QAuth',
     'QUser'
-    ]    
+    ]
+
+if LOCAL_DEBUG:
+    INSTALLED_APPS += [
+        'corsheaders',
+    ]
+
 # for all-auth usage:
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 SITE_ID = 1
@@ -74,6 +83,12 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+if LOCAL_DEBUG:
+    MIDDLEWARE += [
+        'corsheaders.middleware.CorsMiddleware',
+        'django.middleware.common.CommonMiddleware',
+    ]
 
 ROOT_URLCONF = 'iQueensu.urls'
 
@@ -99,16 +114,24 @@ WSGI_APPLICATION = 'iQueensu.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'iQueensu',
-	'USER': 'iQueensu',
-	'PASSWORD':'Iqueensu.com123',
-	'HOST':'localhost',
-	'PORT':'',
+if LOCAL_DEBUG:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'iQueensu',
+            'USER': 'iQueensu',
+            'PASSWORD': 'Iqueensu.com123',
+            'HOST': 'localhost',
+            'PORT': '',
+        }
+    }
 
 
 # Password validation
@@ -161,3 +184,14 @@ REST_FRAMEWORK = {
 }
 
 REST_API_ADDRESS = 'qapi_v0'
+
+
+if LOCAL_DEBUG:
+    CORS_ORIGIN_ALLOW_ALL = True
+    CORS_ALLOW_CREDENTIALS = True
+    CORS_ORIGIN_WHITELIST = (
+        'localhost:3000',
+    )
+    CORS_ORIGIN_REGEX_WHITELIST = (
+        'localhost:3000',
+    )
