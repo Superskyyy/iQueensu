@@ -15,6 +15,10 @@ import sys
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+BACKEND_DIR = BASE_DIR
+FRONTEND_DIR = os.path.join(BACKEND_DIR,'..', 'frontend')
+
 #sys.path.insert(0, os.path.join(BASE_DIR, 'apps\\test_apps'))
 # print(sys.path)
 
@@ -97,16 +101,14 @@ WSGI_APPLICATION = 'iQueensu.wsgi.application'
 
 
 # Database
-# https://docs.djangoproject.com/en/2.1/ref/settings/#databases
+# https:/
+# /docs.djangoproject.com/en/2.1/ref/settings/#databases
 
+PROJECT_DIR = os.path.abspath(os.path.dirname(__file__))
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'iQueensu',
-	'USER': 'iQueensu',
-	'PASSWORD':'Iqueensu.com123',
-	'HOST':'localhost',
-	'PORT':'',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(PROJECT_DIR,'iQueensu.db'),
     }
 }
 
