@@ -4,12 +4,12 @@ import React from 'react';
 export class MapContainer extends React.Component {
   render() {
     return (
-      <Map google={this.props.google} zoom={14}>
-
-
-        <InfoWindow onClose={this.onInfoWindowClose}>
-
-        </InfoWindow>
+      <Map google={this.props.google} zoom={15}
+        initialCenter={{
+            lat: 44.2252795,
+            lng: -76.4973299
+      }}>
+        
       </Map>
     );
   }
