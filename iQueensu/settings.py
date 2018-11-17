@@ -29,7 +29,7 @@ SECRET_KEY = 'l=zqe8o+tt8v6fyd*q-0+1_+_1440a$vmi--5vomh*j1jy4p8w'
 DEBUG = True
 
 # Turn LOCAL_DEBUG on if you want to debug frontend using npm start
-LOCAL_DEBUG = False
+LOCAL_DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
