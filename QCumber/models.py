@@ -25,6 +25,13 @@ class CampusPossibleValues(models.Model):
         return self.text
 
 
+class GradingPossibleValues(models.Model):
+    text = models.CharField(max_length=128)
+
+    def __str__(self):
+        return self.text
+
+
 class AcademicGroupPossibleValues(models.Model):
     text = models.CharField(max_length=128)
 
@@ -71,7 +78,7 @@ class CourseDetail(models.Model):
     )
     units = models.DecimalField(max_digits=4, decimal_places=2)
     grading_basis = models.ForeignKey(
-        SubjectPossibleValues,
+        GradingPossibleValues,
         on_delete=models.SET_NULL,
         blank=True,
         null=True,
@@ -142,3 +149,10 @@ class Course(models.Model):
                "Number \t" + self.number.__str__() + '\n' + \
                "Name \t" + self.name.__str__() + '\n' + \
                "Detail \t ---------------- \n" + self.details.__str__()
+
+
+class Log(models.Model):
+    time = models.DateTimeField(auto_now=True, auto_now_add=True)
+    source = models.CharField(max_length=128)
+    type = models.CharField(max_length=32)
+    message = models.TextField()
