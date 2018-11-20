@@ -10,8 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
-import os
 import sys
+
+import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -47,7 +48,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     ]
-#apps for auth purposes
+
+# apps for auth purposes
 INSTALLED_APPS += [
     'rest_framework.authtoken',
     'rest_auth',
@@ -58,6 +60,11 @@ INSTALLED_APPS += [
     'QAuth',
     'QUser'
     ]
+
+# app for Qcumber
+INSTALLED_APPS += [
+    'QCumber'
+]
 
 if LOCAL_DEBUG:
     INSTALLED_APPS += [
