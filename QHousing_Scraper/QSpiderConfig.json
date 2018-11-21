@@ -1,5 +1,5 @@
 {
-  "_comment": "DO NOT INCLUDE THIS FILE IN RELEASE BRANCH",
+  "_comment": "DO NOT INCLUDE THIS FILE IN RELEASE BRANCH override onresult will disable resultdb?",
   "taskdb": "mongodb+taskdb://root:iqueensu@35.183.130.225:27017/qhousing_task_dev?authSource=admin",
   "projectdb": "mongodb+projectdb://root:iqueensu@35.183.130.225:27017/qhousing_project_dev?authSource=admin",
   "resultdb": "mongodb+resultdb://root:iqueensu@35.183.130.225:27017/qhousing_result_dev?authSource=admin",
@@ -7,5 +7,8 @@
     "username": "root",
     "password": "iQueensu.com123",
     "need-auth": true
+  },
+  "result_worker": {
+    "result_cls": "QHousing_result_worker.MyResultWorker"
   }
 }
