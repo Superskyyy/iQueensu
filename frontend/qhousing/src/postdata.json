@@ -1,0 +1,142 @@
+[
+  {
+    "type": "Feature",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        -76.500193,
+        44.226313
+      ]
+    },
+    "properties": {
+      "bedroom": "2",
+      "washroom": "1",
+      "type": "apartment",
+      "description": "This is first",
+      "title": "First",
+      "image": "mazama.jpg",
+      "url": "http://www.craterlakelodges.com/lodging/mazama-village-campground/",
+      "marker-size": "small"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        -76.5018577,
+        44.2237203
+      ]
+    },
+    "properties": {
+      "bedroom": "4",
+      "washroom": "2",
+      "type": "house",
+      "description": "This is second",
+      "title": "Second",
+      "url": "http://www.nps.gov/crla/planyourvisit/campgrounds.htm",
+      "image": "lostcreek.jpg",
+      "marker-size": "small"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        -76.5027347,
+        44.2250563
+      ]
+    },
+    "properties": {
+      "bedroom": "2",
+      "washroom": "2",
+      "type": "apartment",
+      "description": "This is third",
+      "title": "third",
+      "url": "https://www.fs.usda.gov/recarea/rogue-siskiyou/recreation/ohv/recarea/?recid=69764&actid=29",
+      "image": "huckleberry.jpg",
+      "marker-size": "small"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        -76.498301,
+        44.230562
+      ]
+    },
+    "properties": {
+      "bedroom": "5+",
+      "washroom": "3",
+      "type": "house",
+      "description": "This is fourth",
+      "title": "fourth",
+      "url": "https://www.fs.usda.gov/recarea/rogue-siskiyou/null/recarea/?recid=69828&actid=29",
+      "image": "naturalbridge.jpg",
+      "marker-size": "small"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        -76.493792,
+        44.232184
+      ]
+    },
+    "properties": {
+      "bedroom": "1",
+      "washroom": "1",
+      "type": "apartment",
+      "description": "this is fifth",
+      "title": "fifth",
+      "url": "https://www.fs.usda.gov/recarea/fremont-winema/recreation/recarea/?recid=59719&actid=31",
+      "image": "scottcreek.jpg",
+      "marker-size": "small"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        -76.494187,
+        44.230108
+      ]
+    },
+    "properties": {
+      "bedroom": "4",
+      "washroom": "3",
+      "type": "house",
+      "description": "this is sixth",
+      "title": "sixth",
+      "url": "https://www.fs.usda.gov/recarea/rogue-siskiyou/recarea/?recid=69922",
+      "image": "unioncreek.jpg",
+      "marker-size": "small"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        -76.488955,
+        44.223232
+      ]
+    },
+    "properties": {
+      "bedroom": "2",
+      "washroom": "2",
+      "type": "apartment",
+      "description": "this is seventh",
+      "title": "seventh",
+      "url": "https://www.fs.usda.gov/recarea/rogue-siskiyou/null/recarea/?recid=69720&actid=29",
+      "image": "farewellbend.jpg",
+      "marker-size": "small"
+    }
+  }
+]
