@@ -6,7 +6,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from .settings.Settings import *
 
 
-class spider:
+class Spider:
     __SCRAPER_DRIVER_DIR = None
 
     def __init__(self):
@@ -60,3 +60,6 @@ class spider:
 
         print("Driver", SCRAPER_DRIVER, "located at", config.data['driver_path'])
         return config.data['driver_path']
+
+
+a = Spider()
