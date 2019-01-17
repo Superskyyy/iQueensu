@@ -3,8 +3,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.expected_conditions import presence_of_element_located
 from selenium.webdriver.support.ui import WebDriverWait
 
-from .settings.Settings import *
-
+from QCumber.scraper.settings.Settings import *
 
 class Spider:
     __SCRAPER_DRIVER_DIR = None
