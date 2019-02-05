@@ -1,6 +1,7 @@
-import os
 import sys
+
 import json
+import os
 
 SCRAPER_DEBUG = True
 SCRAPER_LOCAL_TEST = True

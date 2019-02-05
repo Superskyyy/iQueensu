@@ -1,6 +1,7 @@
-import os
 import sys
+
 import json
+import os
 
 SCRAPER_DEBUG = True
 SCRAPER_LOCAL_TEST = True
@@ -23,5 +24,6 @@ class Settings:
         with open(self.purify_path(os.path.join(sys.path[0], path)), 'w+') as file:
             json.dump(self.data, file)
 
-    def purify_path(self, path):
+    @staticmethod
+    def purify_path(path):
         return os.path.normpath(os.path.abspath(path))

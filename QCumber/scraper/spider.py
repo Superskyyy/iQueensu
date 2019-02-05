@@ -3,7 +3,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.expected_conditions import presence_of_element_located
 from selenium.webdriver.support.ui import WebDriverWait
 
-from QCumber.scraper.settings.Settings import *
+from QCumber.scraper.assests.settings import *
+
 
 class Spider:
     __SCRAPER_DRIVER_DIR = None
@@ -21,6 +22,8 @@ class Spider:
         with webdriver.Firefox(options=option, executable_path=self.SCRAPER_DRIVER_DIR) as driver:
             driver.get('https://my.queensu.ca')
 
+            print(type(driver))
+
             wait = WebDriverWait(driver, 10)
             wait.until(presence_of_element_located((By.ID, 'username')))
 
@@ -33,11 +36,22 @@ class Spider:
                 driver.get_screenshot_as_file('test.png')
 
             print("Logged in!")
-
+            wait.until(presence_of_element_located((By.CLASS_NAME, 'solus-tab')))
+            driver.find_element_by_class_name('solus-tab').click()
+            
             input()
+            driver.close()
+
+    @staticmethod
+    def inject_sys_path():
+        print("Current OS version: " + sys.platform)
+        source = os.environ["PATH"].split(";" if sys.platform.__contains__("win") else ":")
+        os.sys.path.extend(source)
 
     def find_driver_raw(self, destiny):
         print("Start searching driver under available path")
+        self.inject_sys_path()
+
         for path in os.sys.path:
             for rel_path, dirs, files in os.walk(path):
                 if destiny in files:

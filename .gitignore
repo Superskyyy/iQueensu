@@ -159,3 +159,6 @@ venv.bak/
 .mypy_cache/
 
 /QCumber_Scraper/settings/Settings.py
+/QCumber/scraper/QCumber_Scraper_Config.json
+/QCumber/scraper/test.png
+/QCumber/scraper/geckodriver.log
