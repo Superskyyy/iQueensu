@@ -1,0 +1,14 @@
+[
+  {
+    "step": 1,
+    "action": {
+      "type": "dismiss",
+      "action": [
+        {
+          "by": "id",
+          "value": "asldkjad"
+        }
+      ]
+    }
+  }
+]

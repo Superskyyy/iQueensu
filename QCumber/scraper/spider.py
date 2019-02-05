@@ -3,7 +3,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.expected_conditions import presence_of_element_located
 from selenium.webdriver.support.ui import WebDriverWait
 
-from QCumber.scraper.assests.settings import *
+from QCumber.scraper.assets.process import Process
+from QCumber.scraper.assets.settings import *
 
 
 class Spider:
@@ -22,8 +23,6 @@ class Spider:
         with webdriver.Firefox(options=option, executable_path=self.SCRAPER_DRIVER_DIR) as driver:
             driver.get('https://my.queensu.ca')
 
-            print(type(driver))
-
             wait = WebDriverWait(driver, 10)
             wait.until(presence_of_element_located((By.ID, 'username')))
 
@@ -38,7 +37,10 @@ class Spider:
             print("Logged in!")
             wait.until(presence_of_element_located((By.CLASS_NAME, 'solus-tab')))
             driver.find_element_by_class_name('solus-tab').click()
-            
+
+            instruction_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "assets", "process.json")
+            Process(driver).load(instruction_path).run()
+
             input()
             driver.close()
 
