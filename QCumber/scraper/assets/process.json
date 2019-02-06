@@ -1,14 +1,6 @@
 [
   {
-    "step": 1,
-    "action": {
-      "type": "dismiss",
-      "action": [
-        {
-          "by": "id",
-          "value": "asldkjad"
-        }
-      ]
-    }
+    "type": "goto",
+    "action": "https://saself.ps.queensu.ca/psc/saself/EMPLOYEE/HRMS/c/SA_LEARNER_SERVICES.SSS_BROWSE_CATLG_P.GBL"
   }
 ]

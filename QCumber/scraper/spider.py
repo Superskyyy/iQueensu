@@ -3,7 +3,6 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.expected_conditions import presence_of_element_located
 from selenium.webdriver.support.ui import WebDriverWait
 
-from QCumber.scraper.assets.process import Process
 from QCumber.scraper.assets.settings import *
 
 
@@ -21,7 +20,8 @@ class Spider:
         option.add_argument('--disable-gpu')
 
         with webdriver.Firefox(options=option, executable_path=self.SCRAPER_DRIVER_DIR) as driver:
-            driver.get('https://my.queensu.ca')
+            driver.get(
+                'https://saself.ps.queensu.ca/psc/saself/EMPLOYEE/HRMS/c/SA_LEARNER_SERVICES.SSS_BROWSE_CATLG_P.GBL')
 
             wait = WebDriverWait(driver, 10)
             wait.until(presence_of_element_located((By.ID, 'username')))
@@ -35,14 +35,29 @@ class Spider:
                 driver.get_screenshot_as_file('test.png')
 
             print("Logged in!")
-            wait.until(presence_of_element_located((By.CLASS_NAME, 'solus-tab')))
-            driver.find_element_by_class_name('solus-tab').click()
+            wait.until(presence_of_element_located((By.ID, 'DERIVED_SSS_BCC_SSS_EXPAND_ALL$97$')))
+            driver.find_element_by_id("DERIVED_SSS_BCC_SSS_EXPAND_ALL$97$").click()
 
-            instruction_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "assets", "process.json")
-            Process(driver).load(instruction_path).run()
+            i = 0
+            while True:
+                wait_quick = WebDriverWait(driver, 3)
+                try:
+                    wait_quick.until(presence_of_element_located((By.ID, "CRSE_NBR$" + str(i))))
+                    item = driver.find_element_by_id("CRSE_NBR$" + str(i))
+                    course_nbr = item.text
+                    course_title = driver.find_element_by_id("CRSE_TITLE$" + str(i)).text
+                    print("course#: ", course_nbr, " course title: ", course_title)
+                    item.click()
+                    wait_quick.until(presence_of_element_located((By.ID, 'DERIVED_SAA_CRS_RETURN_PB$163$')))
+                    driver.find_element_by_id('DERIVED_SAA_CRS_RETURN_PB$163$').click()
+                except Exception:
+                    break
+                i = i + 1
+
+            # instruction_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "assets", "process.json")
+            # Process(driver).load(instruction_path).run()
 
             input()
-            driver.close()
 
     @staticmethod
     def inject_sys_path():

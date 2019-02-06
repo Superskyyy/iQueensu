@@ -1,5 +1,6 @@
 import io
 import json
+from selenium.common.exceptions import NoSuchElementException
 
 
 class Process:
@@ -14,4 +15,18 @@ class Process:
         return self
 
     def run(self):
-        print(self.__procedure)
+        for steps in self.__procedure:
+            getattr(self, steps['type'])(steps['action'])
+
+    def dismiss(self, elements):
+        for steps in elements:
+            try:
+                getattr(self.__driver, 'find_element_by_' + steps['by'])(steps['value']).click()
+            except NoSuchElementException:
+                pass
+
+    def wait(self, elements):
+        pass
+
+    def goto(self, url):
+        self.__driver.get(url)

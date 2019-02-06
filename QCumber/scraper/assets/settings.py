@@ -3,8 +3,8 @@ import sys
 import json
 import os
 
-SCRAPER_DEBUG = True
-SCRAPER_LOCAL_TEST = True
+SCRAPER_DEBUG = False
+SCRAPER_LOCAL_TEST = False
 SCRAPER_USER_NAME = '17ht13'  # Edit this
 SCRAPER_USER_PASSWD = 'Nq9!qJRJ5C'  # Edit this
 
