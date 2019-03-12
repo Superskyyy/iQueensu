@@ -1,3 +1,7 @@
+import logging
+import queue
+from logging.handlers import QueueHandler
+from logging.handlers import QueueListener
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.expected_conditions import presence_of_element_located
@@ -10,6 +14,18 @@ class Spider:
     __SCRAPER_DRIVER_DIR = None
 
     def __init__(self):
+        logger = logging.getLogger("QCumber_Scraper")
+        que = queue.Queue(-1)
+        queue_handler = QueueHandler(que)
+        handler = logging.StreamHandler()
+        listener = QueueListener(que, handler)
+        logger.addHandler(queue_handler)
+        formatter = logging.Formatter('%(name)s - %(asctime)s: %(message)s')
+        handler.setFormatter(formatter)
+        listener.start()
+
+        # TODO: 写完websocker那块
+
         self.SCRAPER_DRIVER_DIR = self.find_driver(SCRAPER_DRIVER)
         assert self.SCRAPER_DRIVER_DIR is not None, 'Driver not found!'
 
@@ -34,7 +50,7 @@ class Spider:
             if SCRAPER_DEBUG:
                 driver.get_screenshot_as_file('test.png')
 
-            print("Logged in!")
+            logger.info("Logged in!")
             wait.until(presence_of_element_located((By.ID, 'DERIVED_SSS_BCC_SSS_EXPAND_ALL$97$')))
             driver.find_element_by_id("DERIVED_SSS_BCC_SSS_EXPAND_ALL$97$").click()
 
@@ -46,7 +62,7 @@ class Spider:
                     item = driver.find_element_by_id("CRSE_NBR$" + str(i))
                     course_nbr = item.text
                     course_title = driver.find_element_by_id("CRSE_TITLE$" + str(i)).text
-                    print("course#: ", course_nbr, " course title: ", course_title)
+                    logger.info("course#: ", course_nbr, " course title: ", course_title)
                     item.click()
                     wait_quick.until(presence_of_element_located((By.ID, 'DERIVED_SAA_CRS_RETURN_PB$163$')))
                     driver.find_element_by_id('DERIVED_SAA_CRS_RETURN_PB$163$').click()
@@ -56,8 +72,6 @@ class Spider:
 
             # instruction_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "assets", "process.json")
             # Process(driver).load(instruction_path).run()
-
-            input()
 
     @staticmethod
     def inject_sys_path():
@@ -90,6 +104,3 @@ class Spider:
 
         print("Driver", SCRAPER_DRIVER, "located at", config.data['driver_path'])
         return config.data['driver_path']
-
-
-a = Spider()

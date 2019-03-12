@@ -3,6 +3,8 @@ import json
 from selenium.common.exceptions import NoSuchElementException
 
 
+# Because of some problem, this function stop to develop for now.
+
 class Process:
     __procedure: json
 

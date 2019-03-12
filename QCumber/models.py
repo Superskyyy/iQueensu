@@ -152,7 +152,7 @@ class Course(models.Model):
 
 
 class Log(models.Model):
-    time = models.DateTimeField(auto_now=True, auto_now_add=True)
+    time = models.DateTimeField(auto_now=True)
     source = models.CharField(max_length=128)
     type = models.CharField(max_length=32)
     message = models.TextField()
