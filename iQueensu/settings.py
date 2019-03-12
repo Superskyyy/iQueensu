@@ -11,11 +11,12 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+import platform
 import sys
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-#sys.path.insert(0, os.path.join(BASE_DIR, 'apps\\test_apps'))
+# sys.path.insert(0, os.path.join(BASE_DIR, 'apps\\test_apps'))
 # print(sys.path)
 
 
@@ -29,10 +30,13 @@ SECRET_KEY = 'l=zqe8o+tt8v6fyd*q-0+1_+_1440a$vmi--5vomh*j1jy4p8w'
 DEBUG = True
 
 # Turn LOCAL_DEBUG on if you want to debug frontend using npm start
+
+my_os = platform.system()
 LOCAL_DEBUG = False
+if my_os != 'Linux':
+    LOCAL_DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
-
 
 # Application definition
 
@@ -46,8 +50,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    ]
-#apps for auth purposes
+]
+# apps for auth purposes
 INSTALLED_APPS += [
     'rest_framework.authtoken',
     'rest_auth',
@@ -57,7 +61,7 @@ INSTALLED_APPS += [
     'rest_auth.registration',
     'QAuth',
     'QUser'
-    ]
+]
 
 if LOCAL_DEBUG:
     INSTALLED_APPS += [
@@ -68,9 +72,6 @@ if LOCAL_DEBUG:
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 SITE_ID = 1
 AUTH_USER_MODEL = 'QUser.CustomUser'
-
-
-
 
 # register our apps here ^^
 
@@ -110,7 +111,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'iQueensu.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
@@ -133,7 +133,6 @@ else:
         }
     }
 
-
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
 
@@ -152,7 +151,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
@@ -166,14 +164,13 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
-#STATIC_ROOT = "/root/iQueensu/static"
-#STATICFILES_DIRS = [
+# STATIC_ROOT = "/root/iQueensu/static"
+# STATICFILES_DIRS = [
 #           os.path.join(BASE_DIR, "static"),
 #          ]
 
@@ -184,7 +181,6 @@ REST_FRAMEWORK = {
 }
 
 REST_API_ADDRESS = 'qapi_v0'
-
 
 if LOCAL_DEBUG:
     CORS_ORIGIN_ALLOW_ALL = True

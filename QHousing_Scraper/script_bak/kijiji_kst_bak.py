@@ -3,9 +3,9 @@
 # Created on 2018-11-06 14:11:56
 # Project: QHousing_Kijiji_KST_DEV
 
-'''
+"""
 https://github.com/googlemaps/google-maps-services-python
-'''
+"""
 import datetime
 
 import googlemaps
@@ -63,6 +63,7 @@ class Handler(BaseHandler):
 
     def detail_page(self, response):
 
+        global dirty_info
         address = response.doc('[itemprop="address"]').text()
 
         # Housing properties
