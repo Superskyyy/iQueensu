@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
 ]
+
 # apps for auth purposes
 INSTALLED_APPS += [
     'rest_framework.authtoken',
@@ -62,6 +63,12 @@ INSTALLED_APPS += [
     'QAuth',
     'QUser'
 ]
+
+# app for Qcumber
+INSTALLED_APPS += [
+    'QCumber'
+]
+
 
 if LOCAL_DEBUG:
     INSTALLED_APPS += [
@@ -124,12 +131,12 @@ if LOCAL_DEBUG:
 else:
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'iQueensu',
-            'USER': 'iQueensu',
-            'PASSWORD': 'Iqueensu.com123',
-            'HOST': 'localhost',
-            'PORT': '',
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': 'iqueensu',
+            'USER': 'root',
+            'PASSWORD': 'iQueensu.com123',
+            'HOST': 'iqueensu.cxnxocpn6owk.ca-central-1.rds.amazonaws.com',
+            'PORT': '5432',
         }
     }
 

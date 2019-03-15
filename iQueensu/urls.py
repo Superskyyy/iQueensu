@@ -22,7 +22,9 @@ urlpatterns = [
     path('indexPage/', include('indexPage.urls')),
     path('qapi_v0/', include('QAPI.urls')),
     path('qauth_v0/', include('QAuth.urls')),
+    path('qcumber/', include('QCumber.urls'))
 ]
+
 
 # Add URL maps to redirect the base URL to our application
 from django.views.generic import RedirectView
