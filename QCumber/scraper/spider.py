@@ -2,6 +2,7 @@ import logging
 import queue
 from logging.handlers import QueueHandler
 from logging.handlers import QueueListener
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.expected_conditions import presence_of_element_located
@@ -49,14 +50,14 @@ class Spider:
 
             if SCRAPER_DEBUG:
                 driver.get_screenshot_as_file('test.png')
-
+            print("Login Successful")
             logger.info("Logged in!")
             wait.until(presence_of_element_located((By.ID, 'DERIVED_SSS_BCC_SSS_EXPAND_ALL$97$')))
             driver.find_element_by_id("DERIVED_SSS_BCC_SSS_EXPAND_ALL$97$").click()
 
             i = 0
             while True:
-                wait_quick = WebDriverWait(driver, 3)
+                wait_quick = WebDriverWait(driver, 30)
                 try:
                     wait_quick.until(presence_of_element_located((By.ID, "CRSE_NBR$" + str(i))))
                     item = driver.find_element_by_id("CRSE_NBR$" + str(i))
@@ -84,6 +85,7 @@ class Spider:
         self.inject_sys_path()
 
         for path in os.sys.path:
+            print(path)
             for rel_path, dirs, files in os.walk(path):
                 if destiny in files:
                     print("Driver", destiny, "found!")
@@ -104,3 +106,7 @@ class Spider:
 
         print("Driver", SCRAPER_DRIVER, "located at", config.data['driver_path'])
         return config.data['driver_path']
+
+
+if __name__ == '__main__':
+    my_spider = Spider()
