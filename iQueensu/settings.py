@@ -69,6 +69,7 @@ INSTALLED_APPS += [
     'QCumber'
 ]
 
+
 if LOCAL_DEBUG:
     INSTALLED_APPS += [
         'corsheaders',

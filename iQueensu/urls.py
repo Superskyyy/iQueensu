@@ -23,17 +23,18 @@ urlpatterns = [
     path('qapi_v0/', include('QAPI.urls')),
     path('qauth_v0/', include('QAuth.urls')),
     path('qcumber/', include('QCumber.urls'))
-    ]
+]
 
-#Add URL maps to redirect the base URL to our application
+
+# Add URL maps to redirect the base URL to our application
 from django.views.generic import RedirectView
+
 urlpatterns += [
     path('', RedirectView.as_view(url='/indexPage/')),
-    ]
+]
 
 # Use static() to add url mapping to serve static files during development (only)
 from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-
