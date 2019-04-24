@@ -14,6 +14,8 @@ import os
 import platform
 import sys
 
+from QCumber.scraper.assets.settings import SCRAPER_DB_CREDENTIALS as DB
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # sys.path.insert(0, os.path.join(BASE_DIR, 'apps\\test_apps'))
@@ -69,7 +71,6 @@ INSTALLED_APPS += [
     'QCumber'
 ]
 
-
 if LOCAL_DEBUG:
     INSTALLED_APPS += [
         'corsheaders',
@@ -121,6 +122,7 @@ WSGI_APPLICATION = 'iQueensu.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
+LOCAL_DEBUG = True
 if LOCAL_DEBUG:
     DATABASES = {
         'default': {
@@ -129,14 +131,15 @@ if LOCAL_DEBUG:
         }
     }
 else:
+
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': 'iqueensu',
-            'USER': 'root',
-            'PASSWORD': 'iQueensu.com123',
-            'HOST': 'iqueensu.cxnxocpn6owk.ca-central-1.rds.amazonaws.com',
-            'PORT': '5432',
+            'NAME': DB["database"],
+            'USER': DB["username"],
+            'PASSWORD': DB["password"],
+            'HOST': DB["host"],
+            'PORT': DB["port"],
         }
     }
 
