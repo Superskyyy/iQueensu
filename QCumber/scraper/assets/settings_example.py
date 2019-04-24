@@ -1,15 +1,22 @@
-import sys
-
 import json
 import os
+import sys
 
 SCRAPER_DEBUG = True
 SCRAPER_LOCAL_TEST = True
 SCRAPER_USER_NAME = 'your user name' #Edit this
 SCRAPER_USER_PASSWD = 'your passwd' #Edit this
 
-SCRAPER_DRIVER = 'geckodriver.exe'  # Set workable driver name here
+SCRAPER_DRIVER = 'geckodriver'  # Set workable driver name here
 
+SCRAPER_DB_CREDENTIALS = {
+    "database": "",
+    "host": "",
+    "port": "",
+    "username": "",
+    "password": ""
+
+}
 
 class Settings:
     def __init__(self, driver_path):

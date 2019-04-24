@@ -20,15 +20,20 @@ from django.urls import path
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('indexPage/', include('indexPage.urls')),
-    path('qapi_v0/', include('QAPI.urls')),
-    path('qauth_v0/', include('QAuth.urls')),
-    path('qcumber/', include('QCumber.urls'))
-    ]
+    path('qcumber/', include('QCumber.api.urls'))
+]
+#    path('qapi_v0/', include('QAPI.urls')),
+#    path('qauth_v0/', include('QAuth.urls')),
+
+# Qcumber api
+urlpatterns += [
+    path('', include("QCumber.api.urls"))
+]
 
 #Add URL maps to redirect the base URL to our application
 from django.views.generic import RedirectView
 urlpatterns += [
-    path('', RedirectView.as_view(url='/indexPage/')),
+    path('', RedirectView.as_view(url='/indexPage/bbs')),
     ]
 
 # Use static() to add url mapping to serve static files during development (only)

@@ -1,0 +1,9 @@
+[
+  {
+    "model": "QCumber.CareerPossibleValues",
+    "pk": 1,
+    "fields": {
+      "career": "test_career"
+    }
+  }
+]

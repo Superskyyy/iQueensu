@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import *
+
+from QCumber.scraper.assets.models import *
 
 # Register your models here.
 

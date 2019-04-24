@@ -1,5 +1,6 @@
 import logging
 import queue
+import random
 from logging.handlers import QueueHandler
 from logging.handlers import QueueListener
 
@@ -8,35 +9,64 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.expected_conditions import presence_of_element_located
 from selenium.webdriver.support.ui import WebDriverWait
 
+from QCumber.scraper.assets.models import *
 from QCumber.scraper.assets.settings import *
+
+
+# import db_ops_for_testing
 
 
 class Spider:
     __SCRAPER_DRIVER_DIR = None
 
     def __init__(self):
-        logger = logging.getLogger("QCumber_Scraper")
+
+        # logging stuff
+        logging.basicConfig(level=logging.DEBUG,
+                            format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
+                            datefmt='%m-%d %H:%M',
+                            filename='spider.log',
+                            filemode='w')
+
+        self.logger = logging.getLogger("QCumber_Scraper")
+        self.logger.setLevel(logging.DEBUG)
         que = queue.Queue(-1)
         queue_handler = QueueHandler(que)
         handler = logging.StreamHandler()
         listener = QueueListener(que, handler)
-        logger.addHandler(queue_handler)
+        self.logger.addHandler(queue_handler)
         formatter = logging.Formatter('%(name)s - %(asctime)s: %(message)s')
         handler.setFormatter(formatter)
         listener.start()
 
-        # TODO: 写完websocker那块
+        # Course_data:
+        self.course_data = list()
 
+        # TODO: 写完websocker那块 ??
+
+        # Selenium setup
         self.SCRAPER_DRIVER_DIR = self.find_driver(SCRAPER_DRIVER)
         assert self.SCRAPER_DRIVER_DIR is not None, 'Driver not found!'
 
-        option = webdriver.FirefoxOptions()
+        self.option = webdriver.FirefoxOptions()
 
         if not (SCRAPER_LOCAL_TEST and SCRAPER_DEBUG):
-            option.add_argument('-headless')
-        option.add_argument('--disable-gpu')
+            self.option.add_argument('-headless')
+        self.option.add_argument('--disable-gpu')
 
-        with webdriver.Firefox(options=option, executable_path=self.SCRAPER_DRIVER_DIR) as driver:
+    def solus_random_wait(self, start, stop, step):
+        """
+        We get a random float for spider calls
+        :param start: start int
+        :param step: stop int
+        :param step: steps, e.g. 0.5
+        :return: None
+        """
+        return random.randint(0, int((stop - start) / step)) * step + start
+
+    def solus_spider(self):
+
+        with webdriver.Firefox(options=self.option, executable_path=self.SCRAPER_DRIVER_DIR) as driver:
             driver.get(
                 'https://saself.ps.queensu.ca/psc/saself/EMPLOYEE/HRMS/c/SA_LEARNER_SERVICES.SSS_BROWSE_CATLG_P.GBL')
 
@@ -45,34 +75,65 @@ class Spider:
 
             driver.find_element_by_id('username').send_keys(SCRAPER_USER_NAME)
             driver.find_element_by_id('password').send_keys(SCRAPER_USER_PASSWD)
-
             driver.find_element_by_name('_eventId_proceed').click()
 
             if SCRAPER_DEBUG:
                 driver.get_screenshot_as_file('test.png')
+
             print("Login Successful")
-            logger.info("Logged in!")
+            self.logger.info("Logged in!")
             wait.until(presence_of_element_located((By.ID, 'DERIVED_SSS_BCC_SSS_EXPAND_ALL$97$')))
             driver.find_element_by_id("DERIVED_SSS_BCC_SSS_EXPAND_ALL$97$").click()
 
             i = 0
             while True:
-                wait_quick = WebDriverWait(driver, 30)
+
+                # IMPORTANT NOTE > We need to
+                # KEEP THE CALL TIME INTERVAL HIGH ENOUGH TO PREVENT DETECTION
+                wait_quick = WebDriverWait(driver, 35, poll_frequency=self.solus_random_wait(1, 3, 0.5))
                 try:
                     wait_quick.until(presence_of_element_located((By.ID, "CRSE_NBR$" + str(i))))
+
                     item = driver.find_element_by_id("CRSE_NBR$" + str(i))
+
                     course_nbr = item.text
+                    if (course_nbr is "UNSP"):
+                        self.logger.info("Unspecified found, ignored for now. - Sky")
+                        continue
                     course_title = driver.find_element_by_id("CRSE_TITLE$" + str(i)).text
-                    logger.info("course#: ", course_nbr, " course title: ", course_title)
+                    if ("***" in course_title):
+                        self.logger.info("Multiple offering course found, ignored for now. - Sky")
+                        continue
+                    self.logger.info("course#: " + course_nbr + " course title: " + course_title)
                     item.click()
                     wait_quick.until(presence_of_element_located((By.ID, 'DERIVED_SAA_CRS_RETURN_PB$163$')))
                     driver.find_element_by_id('DERIVED_SAA_CRS_RETURN_PB$163$').click()
-                except Exception:
+
+                    # save data to django model
+
+                except Exception:  # what exception?
                     break
                 i = i + 1
-
             # instruction_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "assets", "process.json")
             # Process(driver).load(instruction_path).run()
+
+    def save_to_model(self, detail_list):
+        '''
+        Writes scraped data to models
+        :return: None
+        '''
+        # 还没写完
+        CourseDetail_obj = CourseDetail.objects.create()
+        course_obj = Course.objects.create()
+        CareerPossibleValues.objects.create()
+        SubjectPossibleValues.objects.create()
+        CampusPossibleValues.objects.create()
+        GradingPossibleValues.objects.create()
+        AcademicGroupPossibleValues.objects.create()
+        AcademicOrganizationPossibleValues.objects.create()
+        Components.objects.create()
+        EnrollmentInformation.objects.create()
+
 
     @staticmethod
     def inject_sys_path():
@@ -110,3 +171,5 @@ class Spider:
 
 if __name__ == '__main__':
     my_spider = Spider()
+    my_spider.save_to_model()
+    my_spider.solus_spider()

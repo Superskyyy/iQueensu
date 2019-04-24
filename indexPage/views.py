@@ -3,6 +3,8 @@ import json
 
 from django.conf import settings
 from django.http import HttpResponse
+# for redirect
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 
 
@@ -21,3 +23,7 @@ def qhome(request):
     })
     print(jsondata)
     return render(request, 'indexPage/qhome/qhome.html', {'qhome': {'data': jsondata}})
+
+
+def bbs(request):
+    return HttpResponseRedirect("https://bbs.iqueensu.ca")

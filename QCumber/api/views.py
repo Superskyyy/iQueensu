@@ -1,18 +1,19 @@
-from django.http import HttpResponse
 # Create your views here.
-from QCumber.models import CourseDetail
-from QCumber.serializers import CourseDetailSerializer
 from rest_framework import generics
+
+from QCumber.api.serializers import CourseSerializer
+from QCumber.scraper.assets.models import Course
 
 '''
 def index(request):
     return HttpResponse("Qcumber is Running")
 
 '''
+
+
 # Used for read-write endpoints to represent a collection of model instances.
 
 
-class QcumberListCreate(generics.ListCreateAPIView):
-    queryset = CourseDetail.objects.all()
-    serializer_class = CourseDetailSerializer
-
+class QCumberListCreate(generics.ListCreateAPIView):
+    queryset = Course.objects.all()
+    serializer_class = CourseSerializer

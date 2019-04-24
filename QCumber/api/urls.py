@@ -1,8 +1,8 @@
 # QCumber/urls.py
 from django.urls import path
 
-from . import views
+from QCumber.api import views
 
 urlpatterns = [
-    path('', views.index, name='QCumberIndexPage'),
+    path('api/v1/qcumber/', views.QCumberListCreate.as_view()),
 ]
