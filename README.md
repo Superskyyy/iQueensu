@@ -1,6 +1,15 @@
 # iQueensu
-Project iQueensu
+Project iQueensu-backend
 
+
+## Contributors ✨
+
+Thanks goes to these wonderful people:
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore -->
+<table><tr><td align="center"><a href="https://iqueensu.ca"><img src="https://avatars1.githubusercontent.com/u/16908811?v=4" width="100px;" alt="Ricky Zhang"/><br /><sub><b>Ricky Zhang <br/> UI/UX Design</b></sub></a><br/> <a href="https://github.com/Superskyyy/iQueensu/commits?author=RickyZhangCA" title="Documentation">📖</a> <a href="#review-iQueensu" title="Reviewed Pull Requests">👀</a> <a href="#talk-iQueensu" title="Talks">📢</a></td>
+<td align="center"><a href="https://iqueensu.ca"><img src="https://avatars2.githubusercontent.com/u/20739885?v=4" width="100px;" alt="Somion"/><br /><sub><b>Somion <br/> Backend Developer</b></sub></a><br/> <a href="https://github.com/Superskyyy/iQueensu/commits?author=CalEIFe" title="Documentation">📖</a> <a href="#review-iQueensu" title="Reviewed Pull Requests">👀</a> <a href="#talk-iQueensu" title="Talks">📢</a></td></tr></table>
 
 # TO DO LIST: Prioritized 
 
