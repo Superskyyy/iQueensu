@@ -9,6 +9,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.expected_conditions import presence_of_element_located
 from selenium.webdriver.support.ui import WebDriverWait
 
+from QCumber.scraper.assets.models import *
 from QCumber.scraper.assets.settings import *
 
 
@@ -117,24 +118,57 @@ class Spider:
             # instruction_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "assets", "process.json")
             # Process(driver).load(instruction_path).run()
 
-    def save_to_model(self, detail_list):
+    def save_to_model(self, detail_dict):
         '''
         Writes scraped data to models
         :return: None
         '''
         # 还没写完
-        """
-        CourseDetail_obj = CourseDetail.objects.create()
-        course_obj = Course.objects.create()
-        CareerPossibleValues.objects.create()
-        SubjectPossibleValues.objects.create()
-        CampusPossibleValues.objects.create()
-        GradingPossibleValues.objects.create()
-        AcademicGroupPossibleValues.objects.create()
-        AcademicOrganizationPossibleValues.objects.create()
-        Components.objects.create()
-        EnrollmentInformation.objects.create()
-        """
+
+        detail_dict = {"career": "testCareer",
+                       "units": "3",
+                       "grading": "0-100",
+                       "components_description": "test compo",
+                       "campus": "main",
+                       "academic_group": "a&s",
+                       "academic_org": "queens",
+                       "enroll_description": "open",
+                       "course_description": "blow you mind",
+                       "name": "sky",
+                       "number": "717",
+                       "code": "CISC",
+                       "subject_name": "499"
+                       }
+        '''
+        
+        courseDetail_object = CourseDetail(career = CareerPossibleValues.objects.get(career=detail_list["career"]),
+                                           units = detail_list["units"],
+                                           grading_basis= GradingPossibleValues.objects.get(grading=detail_list["grading"]),
+                                           course_components = Components,
+                                           campus = CampusPossibleValues.objects.get(campus=detail_list["campus"]),
+                                           academic_group = AcademicGroupPossibleValues.objects.get(academic_group=detail_list["academic_group"]),
+                                           academic_organization = AcademicOrganizationPossibleValues.objects.get(academic_organization=detail_list["academic_org"]),
+                                           enrollment = EnrollmentInformation.objects.get(description=detail_list["enroll_description"]),
+                                           description= CourseDescription.objects.get(description=detail_list["course_description"]),
+                                           )
+        '''
+        course_object = Course(details=CourseDetail.objects.create(
+            career=CareerPossibleValues.objects.create(career=detail_dict["career"]),
+            units=detail_dict["units"],
+            grading_basis=GradingPossibleValues.objects.create(grading=detail_dict["grading"]),
+            course_components=Components.objects.create(description=detail_dict["components_description"]),
+            campus=CampusPossibleValues.objects.create(campus=detail_dict["campus"]),
+            academic_group=AcademicGroupPossibleValues.objects.create(academic_group=detail_dict["academic_group"]),
+            academic_organization=AcademicOrganizationPossibleValues.objects.create(
+                academic_organization=detail_dict["academic_org"]),
+            enrollment=EnrollmentInformation.objects.create(description=detail_dict["enroll_description"]),
+            description=CourseDescription.objects.create(description=detail_dict["course_description"]), ),
+            name=detail_dict["name"],
+            number=detail_dict["number"],
+            subject=SubjectPossibleValues.objects.create(code=detail_dict['code'],
+                                                         name=detail_dict["subject_name"])
+        )
+        course_object.save()
 
     @staticmethod
     def inject_sys_path():
@@ -176,4 +210,5 @@ class Spider:
 
 if __name__ == '__main__':
     my_spider = Spider()
-    my_spider.scraper_start()
+    # my_spider.scraper_start()
+    my_spider.save_to_model({})

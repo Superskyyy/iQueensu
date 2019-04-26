@@ -35,7 +35,7 @@ class HeroAdmin(admin.ModelAdmin):
         try:
             self.message_user(request, "Scraper start triggered")
 
-            new_scrape = Spider().scraper_start()
+            new_scrape = Spider().save_to_model({})
         except:
             print("Scraper failed")
 

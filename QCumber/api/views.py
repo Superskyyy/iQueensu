@@ -1,8 +1,8 @@
 # Create your views here.
 from rest_framework import generics
 
-from QCumber.api.serializers import CourseSerializer
-from QCumber.scraper.assets.models import Course
+from QCumber.api.serializers import *
+from QCumber.scraper.assets.models import *
 
 '''
 def index(request):

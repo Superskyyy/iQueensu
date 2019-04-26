@@ -2,11 +2,11 @@
 
 {% block object-tools %}
     <div>
-        <form action="start/" method="POST">
+        <form action="solus-course-scraper-start/" method="POST">
             {% csrf_token %}
             <button type="submit">开始爬虫</button>
         </form>
-        <form action="end/" method="POST">
+        <form action="solus-course-scraper-terminate/" method="POST">
             {% csrf_token %}
             <button type="submit">结束爬虫（无效）</button>
         </form>
