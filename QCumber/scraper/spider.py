@@ -9,7 +9,6 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.expected_conditions import presence_of_element_located
 from selenium.webdriver.support.ui import WebDriverWait
 
-from QCumber.scraper.assets.models import *
 from QCumber.scraper.assets.settings import *
 
 
@@ -42,8 +41,9 @@ class Spider:
         # Course_data:
         self.course_data = list()
 
-        # TODO: 写完websocker那块 ??
+        # TODO: 写完websocket那块
 
+        # FIXME: inject js to remark the special courses.
         # Selenium setup
         self.SCRAPER_DRIVER_DIR = self.find_driver(SCRAPER_DRIVER)
         assert self.SCRAPER_DRIVER_DIR is not None, 'Driver not found!'
@@ -123,6 +123,7 @@ class Spider:
         :return: None
         '''
         # 还没写完
+        """
         CourseDetail_obj = CourseDetail.objects.create()
         course_obj = Course.objects.create()
         CareerPossibleValues.objects.create()
@@ -133,7 +134,7 @@ class Spider:
         AcademicOrganizationPossibleValues.objects.create()
         Components.objects.create()
         EnrollmentInformation.objects.create()
-
+        """
 
     @staticmethod
     def inject_sys_path():
@@ -168,8 +169,11 @@ class Spider:
         print("Driver", SCRAPER_DRIVER, "located at", config.data['driver_path'])
         return config.data['driver_path']
 
+    def scraper_start(self):
+        my_spider = Spider()
+        my_spider.solus_spider()
+
 
 if __name__ == '__main__':
     my_spider = Spider()
-    my_spider.save_to_model()
-    my_spider.solus_spider()
+    my_spider.scraper_start()
