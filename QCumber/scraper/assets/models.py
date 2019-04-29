@@ -55,10 +55,12 @@ class Components(models.Model):
 
 
 class EnrollmentInformation(models.Model):
-    description = models.TextField(null=True)
+    enroll_add_consent = models.TextField(null=True)
+    enroll_drop_consent = models.TextField(null=True)
 
     def __str__(self):
-        return self.description
+        return self.enroll_add_consent + "-" + self.enroll_drop_consent
+
 
 
 class CourseDescription(models.Model):

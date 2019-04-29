@@ -1,6 +1,7 @@
 import logging
 import queue
 import random
+import time
 from logging.handlers import QueueHandler
 from logging.handlers import QueueListener
 
@@ -61,7 +62,7 @@ class Spider:
         :param start: start int
         :param step: stop int
         :param step: steps, e.g. 0.5
-        :return: None
+        :return: float
         """
         return random.randint(0, int((stop - start) / step)) * step + start
 
@@ -88,70 +89,99 @@ class Spider:
 
             i = 0
             while True:
-
+                detail_dict = {}
                 # IMPORTANT NOTE > We need to
                 # KEEP THE CALL TIME INTERVAL HIGH ENOUGH TO PREVENT DETECTION
                 wait_quick = WebDriverWait(driver, 35, poll_frequency=self.solus_random_wait(1, 3, 0.5))
-                try:
-                    wait_quick.until(presence_of_element_located((By.ID, "CRSE_NBR$" + str(i))))
+                # try:
+                wait_quick.until(presence_of_element_located((By.ID, "CRSE_NBR$" + str(i))))
 
-                    item = driver.find_element_by_id("CRSE_NBR$" + str(i))
+                item = driver.find_element_by_id("CRSE_NBR$" + str(i))
 
-                    course_nbr = item.text
-                    if (course_nbr is "UNSP"):
-                        self.logger.info("Unspecified found, ignored for now. - Sky")
-                        continue
-                    course_title = driver.find_element_by_id("CRSE_TITLE$" + str(i)).text
-                    if ("***" in course_title):
-                        self.logger.info("Multiple offering course found, ignored for now. - Sky")
-                        continue
-                    self.logger.info("course#: " + course_nbr + " course title: " + course_title)
-                    item.click()
-                    wait_quick.until(presence_of_element_located((By.ID, 'DERIVED_SAA_CRS_RETURN_PB$163$')))
-                    driver.find_element_by_id('DERIVED_SAA_CRS_RETURN_PB$163$').click()
+                course_nbr = item.text
+                if ("UNS" in course_nbr):
+                    self.logger.info("Unspecified found, ignored for now. - Sky")
+                    i += 1
+                    continue
+                course_title = driver.find_element_by_id("CRSE_TITLE$" + str(i)).text
+                if ("***" in course_title):
+                    self.logger.info("Multiple offering course found, ignored for now. - Sky")
+                    i += 1
+                    continue
 
-                    # save data to django model
+                self.logger.info("course#: " + course_nbr + " course title: " + course_title)
 
-                except Exception:  # what exception?
-                    break
+                subject = driver.find_element_by_id("DERIVED_SSS_BCC_GROUP_BOX_1$147$$" + str(i)).text
+
+                subject_code = subject[:4]
+                subject_name = subject[7:]
+                detail_dict["subject_code"] = subject_code
+                detail_dict["subject_name"] = subject_name
+
+                # click into the course
+                # we wait few seconds here to minimize chances of getting caught
+                time.sleep(self.solus_random_wait(2, 5, 0.5))
+                item.click()
+
+                # data prepare
+                wait_quick.until(presence_of_element_located((By.ID, 'SSR_CRSE_OFF_VW_ACAD_CAREER$0')))
+
+                detail_dict["career"] = driver.find_element_by_id("SSR_CRSE_OFF_VW_ACAD_CAREER$0").text
+                detail_dict["units"] = driver.find_element_by_id("DERIVED_CRSECAT_UNITS_RANGE$0").text
+                detail_dict["grading"] = driver.find_element_by_id("SSR_CRSE_OFF_VW_GRADING_BASIS$0").text
+                detail_dict["components_description"] = driver.find_element_by_id("DERIVED_CRSECAT_DESCR$0").text
+
+                detail_dict["campus"] = driver.find_element_by_id("CAMPUS_TBL_DESCR$0").text
+
+                detail_dict["academic_group"] = driver.find_element_by_id("ACAD_GROUP_TBL_DESCR$0").text
+
+                detail_dict["academic_org"] = driver.find_element_by_id("ACAD_ORG_TBL_DESCR$0").text
+                detail_dict["enroll_add_consent"] = driver.find_element_by_id("SSR_CRSE_OFF_VW_CONSENT$0").text
+
+                detail_dict["enroll_drop_consent"] = driver.find_element_by_id(
+                    "SSR_CRSE_OFF_VW_SSR_DROP_CONSENT$0").text
+
+                detail_dict["course_description"] = driver.find_element_by_id("SSR_CRSE_OFF_VW_DESCRLONG$0").text
+                detail_dict["course_title"] = course_title
+                detail_dict["course_number"] = course_nbr
+                wait_quick.until(presence_of_element_located((By.ID, 'DERIVED_SAA_CRS_RETURN_PB$163$')))
+                driver.find_element_by_id('DERIVED_SAA_CRS_RETURN_PB$163$').click()
+
+                # save data to django model
+                print(detail_dict.values())
+                # self.save_to_model(detail_dict)
+
+                # except Exception:  # what exception?
+                # print(Exception)
                 i = i + 1
             # instruction_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "assets", "process.json")
             # Process(driver).load(instruction_path).run()
 
     def save_to_model(self, detail_dict):
-        '''
-        Writes scraped data to models
-        :return: None
-        '''
-        # 还没写完
+        """
+         Writes scraped data to django ORM models
+                :return: None
 
-        detail_dict = {"career": "testCareer",
-                       "units": "3",
-                       "grading": "0-100",
-                       "components_description": "test compo",
-                       "campus": "main",
-                       "academic_group": "a&s",
-                       "academic_org": "queens",
-                       "enroll_description": "open",
-                       "course_description": "blow you mind",
-                       "name": "sky",
-                       "number": "717",
-                       "code": "CISC",
-                       "subject_name": "499"
+        Details Example:
+
+        detail_dict = {"career": "Graduate",
+                       "units": "3.00",
+                       "grading": "Graded",
+                       "components_description": "Seminar",
+                       "campus": "Main",
+                       "academic_group": "Faculty of Health Sciences",
+                       "academic_org": "REH (not department specific)",
+                       "enroll_add_consent": "Department Consent Required",
+                       "enroll_drop_consent":"Department Consent Required",
+                       "course_description": "This cource simply blows you mind",
+                       "course_title": "Fundamental Computing Theroy",
+                       "course_number": "998",
+                       "subject_code": "CISC",
+                       "subject_name": "Computer Infomation and Science"
                        }
-        '''
-        
-        courseDetail_object = CourseDetail(career = CareerPossibleValues.objects.get(career=detail_list["career"]),
-                                           units = detail_list["units"],
-                                           grading_basis= GradingPossibleValues.objects.get(grading=detail_list["grading"]),
-                                           course_components = Components,
-                                           campus = CampusPossibleValues.objects.get(campus=detail_list["campus"]),
-                                           academic_group = AcademicGroupPossibleValues.objects.get(academic_group=detail_list["academic_group"]),
-                                           academic_organization = AcademicOrganizationPossibleValues.objects.get(academic_organization=detail_list["academic_org"]),
-                                           enrollment = EnrollmentInformation.objects.get(description=detail_list["enroll_description"]),
-                                           description= CourseDescription.objects.get(description=detail_list["course_description"]),
-                                           )
-        '''
+
+        """
+
         course_object = Course(details=CourseDetail.objects.create(
             career=CareerPossibleValues.objects.create(career=detail_dict["career"]),
             units=detail_dict["units"],
@@ -161,11 +191,12 @@ class Spider:
             academic_group=AcademicGroupPossibleValues.objects.create(academic_group=detail_dict["academic_group"]),
             academic_organization=AcademicOrganizationPossibleValues.objects.create(
                 academic_organization=detail_dict["academic_org"]),
-            enrollment=EnrollmentInformation.objects.create(description=detail_dict["enroll_description"]),
+            enrollment=EnrollmentInformation.objects.create(enroll_add_consent=detail_dict["enroll_add_consent"],
+                                                            enroll_drop_consent=detail_dict["enroll_drop_consent"]),
             description=CourseDescription.objects.create(description=detail_dict["course_description"]), ),
-            name=detail_dict["name"],
-            number=detail_dict["number"],
-            subject=SubjectPossibleValues.objects.create(code=detail_dict['code'],
+            name=detail_dict["course_title"],
+            number=detail_dict["course_number"],
+            subject=SubjectPossibleValues.objects.create(code=detail_dict['subject_code'],
                                                          name=detail_dict["subject_name"])
         )
         course_object.save()

@@ -57,7 +57,7 @@ class EnrollmentInformation(serializers.ModelSerializer):
     class Meta:
         model = EnrollmentInformation
 
-        fields = ("enrollment_info")
+        fields = ("enroll_add_consent", "enroll_drop_consent")
 
 
 class CourseDescription(serializers.ModelSerializer):
@@ -74,15 +74,23 @@ class CourseDetailSerializer(serializers.ModelSerializer):
     campus = serializers.CharField(source="campus.campus")
     academic_group = serializers.CharField(source="academic_group.academic_group")
     academic_organization = serializers.CharField(source="academic_organization.academic_organization")
-    enrollment = serializers.CharField(source="enrollment.description")
+    enroll_add_consent = serializers.CharField(source="enrollment.enroll_add_consent")
+    enroll_drop_consent = serializers.CharField(source="enrollment.enroll_drop_consent")
     course_description = serializers.CharField(source="description.description")
 
     class Meta:
         model = CourseDetail
 
         fields = (
-            "units", "career", "grading", "components", "campus", "academic_group", "academic_organization",
-            "enrollment",
+            "units",
+            "career",
+            "grading",
+            "components",
+            "campus",
+            "academic_group",
+            "academic_organization",
+            "enroll_add_consent",
+            "enroll_drop_consent",
             "course_description")
 
 
