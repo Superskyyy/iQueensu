@@ -43,6 +43,7 @@ ALLOWED_HOSTS = ["*"]
 # Application definition
 
 INSTALLED_APPS = [
+
     'indexPage.apps.IndexpageConfig',
     'QAPI.apps.QapiConfig',
     'django.contrib.admin',
@@ -104,7 +105,7 @@ ROOT_URLCONF = 'iQueensu.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ["templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

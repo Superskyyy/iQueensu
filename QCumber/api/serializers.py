@@ -57,7 +57,7 @@ class EnrollmentInformation(serializers.ModelSerializer):
     class Meta:
         model = EnrollmentInformation
 
-        fields = ("enrollment_info")
+        fields = ("enroll_add_consent", "enroll_drop_consent")
 
 
 class CourseDescription(serializers.ModelSerializer):
@@ -68,32 +68,40 @@ class CourseDescription(serializers.ModelSerializer):
 
 
 class CourseDetailSerializer(serializers.ModelSerializer):
-    career = serializers.CharField(source="CareerPossibleValues.career")
-    grading = serializers.CharField(source="GradingPossibleValues.grading")
-    components = serializers.CharField(source="Components.component_description")
-    campus = serializers.CharField(source="CampusPossibleValues.campus")
-    academic_group = serializers.CharField(source="AcademicGroupPossibleValues.academic_group")
-    academic_organization = serializers.CharField(source="AcademicOrganizationPossibleValues.academic_organization")
-    enrollment = serializers.CharField(source="EnrollmentInformation.enrollment_info")
-    course_description = serializers.CharField(source="CourseDescription.course_description")
+    career = serializers.CharField(source="career.career")
+    grading = serializers.CharField(source="grading_basis.grading")
+    components = serializers.CharField(source="course_components.description")
+    campus = serializers.CharField(source="campus.campus")
+    academic_group = serializers.CharField(source="academic_group.academic_group")
+    academic_organization = serializers.CharField(source="academic_organization.academic_organization")
+    enroll_add_consent = serializers.CharField(source="enrollment.enroll_add_consent")
+    enroll_drop_consent = serializers.CharField(source="enrollment.enroll_drop_consent")
+    course_description = serializers.CharField(source="description.description")
 
     class Meta:
         model = CourseDetail
 
         fields = (
-            "units", "career", "grading", "components", "campus", "academic_group", "academic_organization",
-            "enrollment",
+            "units",
+            "career",
+            "grading",
+            "components",
+            "campus",
+            "academic_group",
+            "academic_organization",
+            "enroll_add_consent",
+            "enroll_drop_consent",
             "course_description")
 
 
 class CourseSerializer(serializers.ModelSerializer):
-    subject = serializers.CharField(source="SubjectPossibleValues.subject")
-    code = serializers.CharField(source="SubjectPossibleValues.code")
-    course_details = CourseDetailSerializer()
+    subject_name = serializers.CharField(source="subject.name")
+    subject_code = serializers.CharField(source="subject.code")
+    course_details = CourseDetailSerializer(source="details")
 
     class Meta:
         model = Course
 
-        fields = ("subject", "code", "number", "name", "course_details")
+        fields = ("number", "subject_name", "subject_code", "course_details")
 
 # this cannot retrieve the actual val in foreign table but only gets foreign key
