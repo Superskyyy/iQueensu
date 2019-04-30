@@ -87,6 +87,19 @@ class Spider:
             wait.until(presence_of_element_located((By.ID, 'DERIVED_SSS_BCC_SSS_EXPAND_ALL$97$')))
             driver.find_element_by_id("DERIVED_SSS_BCC_SSS_EXPAND_ALL$97$").click()
 
+            # first get a list of subject full names
+            counter = 0
+            subject_full_names = []
+
+            while True:
+                try:
+                    subject_full_name = driver.find_element_by_id(
+                        "DERIVED_SSS_BCC_GROUP_BOX_1$147$$" + str(counter)).text
+                    subject_full_names.append(subject_full_name)
+                except:
+                    break
+                counter += 1
+            print(subject_full_names)
             i = 0
             while True:
                 detail_dict = {}
@@ -111,12 +124,10 @@ class Spider:
 
                 self.logger.info("course#: " + course_nbr + " course title: " + course_title)
 
-                subject = driver.find_element_by_id("DERIVED_SSS_BCC_GROUP_BOX_1$147$$" + str(i)).text
+                # FIXME: this subject needs special attention
 
-                subject_code = subject[:4]
-                subject_name = subject[7:]
-                detail_dict["subject_code"] = subject_code
-                detail_dict["subject_name"] = subject_name
+
+
 
                 # click into the course
                 # we wait few seconds here to minimize chances of getting caught
@@ -125,31 +136,34 @@ class Spider:
 
                 # data prepare
                 wait_quick.until(presence_of_element_located((By.ID, 'SSR_CRSE_OFF_VW_ACAD_CAREER$0')))
+                # get subject
+
+                detail_dict["subject_code"] = driver.find_element_by_id("DERIVED_CRSECAT_DESCR200").text[:4]
+                for names in subject_full_names:
+                    if detail_dict["subject_code"] in names:
+                        detail_dict["subject_name"] = names[7:]
 
                 detail_dict["career"] = driver.find_element_by_id("SSR_CRSE_OFF_VW_ACAD_CAREER$0").text
                 detail_dict["units"] = driver.find_element_by_id("DERIVED_CRSECAT_UNITS_RANGE$0").text
                 detail_dict["grading"] = driver.find_element_by_id("SSR_CRSE_OFF_VW_GRADING_BASIS$0").text
                 detail_dict["components_description"] = driver.find_element_by_id("DERIVED_CRSECAT_DESCR$0").text
-
                 detail_dict["campus"] = driver.find_element_by_id("CAMPUS_TBL_DESCR$0").text
-
                 detail_dict["academic_group"] = driver.find_element_by_id("ACAD_GROUP_TBL_DESCR$0").text
-
                 detail_dict["academic_org"] = driver.find_element_by_id("ACAD_ORG_TBL_DESCR$0").text
                 detail_dict["enroll_add_consent"] = driver.find_element_by_id("SSR_CRSE_OFF_VW_CONSENT$0").text
-
                 detail_dict["enroll_drop_consent"] = driver.find_element_by_id(
                     "SSR_CRSE_OFF_VW_SSR_DROP_CONSENT$0").text
-
                 detail_dict["course_description"] = driver.find_element_by_id("SSR_CRSE_OFF_VW_DESCRLONG$0").text
                 detail_dict["course_title"] = course_title
                 detail_dict["course_number"] = course_nbr
+
+                # this line seems useless
                 wait_quick.until(presence_of_element_located((By.ID, 'DERIVED_SAA_CRS_RETURN_PB$163$')))
                 driver.find_element_by_id('DERIVED_SAA_CRS_RETURN_PB$163$').click()
 
                 # save data to django model
-                print(detail_dict.values())
-                # self.save_to_model(detail_dict)
+                # print(detail_dict.values())
+                self.save_to_model(detail_dict)
 
                 # except Exception:  # what exception?
                 # print(Exception)

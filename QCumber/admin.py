@@ -32,12 +32,12 @@ class HeroAdmin(admin.ModelAdmin):
         return my_urls + urls
 
     def set_scraper_start(self, request):
-        try:
-            self.message_user(request, "Scraper start triggered")
+        # try:
+        self.message_user(request, "Scraper start triggered")
 
-            new_scrape = Spider().save_to_model({})
-        except:
-            print("Scraper failed")
+        new_scrape = Spider().scraper_start()
+        # except:
+        print("Scraper failed")
 
         self.message_user(request, "Scraper has completed")
 
