@@ -2,7 +2,7 @@
 Project iQueensu-backend
 
 <a name="Contributors"/><br/>
-## Contributors
+## Contributors 
 #### `Usernames are listed in alphabetical order`
 <table>
     <tr>
