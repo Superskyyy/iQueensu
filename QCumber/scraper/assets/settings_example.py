@@ -32,5 +32,5 @@ class Settings:
             json.dump(self.data, file)
 
     @staticmethod
-    def purify_path(self, path):
+    def purify_path(path):
         return os.path.normpath(os.path.abspath(path))

@@ -14,7 +14,19 @@ import os
 import platform
 import sys
 
-from QCumber.scraper.assets.settings import SCRAPER_DB_CREDENTIALS as DB
+try:
+    from QCumber.scraper.assets.settings import SCRAPER_DB_CREDENTIALS as DB
+except ModuleNotFoundError as e:
+    print('''
+        Please copy QCumber/scraper/assets/settings_example.py as settings.py in the same folder, 
+        and edit the settings as instructed in the file. 
+        #Notice, settings.py is ignored by .gitignore file, everything in that file WILL BE LOST in CVS.
+    ''')
+    exit(1)  # force to stop
+
+    # make PyCharm feel happy even if there's no settings.py
+    # Theoretically, Following line should be never executed.
+    from QCumber.scraper.assets.settings_example import SCRAPER_DB_CREDENTIALS as DB
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
