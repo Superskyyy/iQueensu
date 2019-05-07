@@ -4,7 +4,14 @@ This module is for spider => PostgreSQL operations
 import datetime
 import json
 
-from QCumber.scraper.assets.settings import SCRAPER_DB_CREDENTIALS as DB
+try:
+    from QCumber.scraper.assets.settings import SCRAPER_DB_CREDENTIALS as DB
+except ModuleNotFoundError as e:
+    print('''
+        Please copy QCumber/scraper/assets/settings_example.py as settings.py in the same folder, 
+        and edit the settings as instructed in the file. #Notice, settings.py is ignored by .gitignore file,
+        everything stored in that file will be lost if you push the code to cvs.
+    ''')
 
 
 # this is just for some fun dont use this class.

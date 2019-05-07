@@ -1,5 +1,5 @@
 from django.apps import AppConfig
 
 
-class QcumberConfig(AppConfig):
+class QCumberConfig(AppConfig):
     name = 'QCumber'

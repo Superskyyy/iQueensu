@@ -11,7 +11,20 @@ from selenium.webdriver.support.expected_conditions import presence_of_element_l
 from selenium.webdriver.support.ui import WebDriverWait
 
 from QCumber.scraper.assets.models import *
-from QCumber.scraper.assets.settings import *
+
+try:
+    from QCumber.scraper.assets.settings import *
+except ModuleNotFoundError as e:
+    print('''
+        Please copy QCumber/scraper/assets/settings_example.py as settings.py in the same folder, 
+        and edit the settings as instructed in the file. 
+        #Notice, settings.py is ignored by .gitignore file, everything in that file WILL BE LOST in CVS.
+    ''')
+    exit(1)  # force to stop
+
+    # make PyCharm feel happy even if there's no settings.py
+    # Theoretically, Following line should be never executed.
+    from QCumber.scraper.assets.settings_example import *
 
 
 # import db_ops_for_testing
@@ -56,11 +69,12 @@ class Spider:
             self.option.add_argument('-headless')
         self.option.add_argument('--disable-gpu')
 
-    def solus_random_wait(self, start, stop, step):
+    @staticmethod
+    def solus_random_wait(start: int, stop: int, step: float):
         """
         We get a random float for spider calls
         :param start: start int
-        :param step: stop int
+        :param stop: stop int
         :param step: steps, e.g. 0.5
         :return: float
         """
@@ -80,7 +94,7 @@ class Spider:
             driver.find_element_by_name('_eventId_proceed').click()
 
             if SCRAPER_DEBUG:
-                driver.get_screenshot_as_file('test.png')
+                driver.get_screenshot_as_file(time.strftime('%Y.%m.%d', time.localtime(time.time())) + '_test.png')
 
             print("Login Successful")
             self.logger.info("Logged in!")
@@ -99,8 +113,10 @@ class Spider:
                 except:
                     break
                 counter += 1
+
             print(subject_full_names)
             i = 0
+
             while True:
                 detail_dict = {}
                 # IMPORTANT NOTE > We need to
@@ -110,8 +126,8 @@ class Spider:
                 wait_quick.until(presence_of_element_located((By.ID, "CRSE_NBR$" + str(i))))
 
                 item = driver.find_element_by_id("CRSE_NBR$" + str(i))
-
                 course_nbr = item.text
+
                 if ("UNS" in course_nbr):
                     self.logger.info("Unspecified found, ignored for now. - Sky")
                     i += 1
@@ -125,9 +141,6 @@ class Spider:
                 self.logger.info("course#: " + course_nbr + " course title: " + course_title)
 
                 # FIXME: this subject needs special attention
-
-
-
 
                 # click into the course
                 # we wait few seconds here to minimize chances of getting caught
@@ -163,7 +176,7 @@ class Spider:
 
                 # save data to django model
                 # print(detail_dict.values())
-                self.save_to_model(detail_dict)
+                #self.save_to_model(detail_dict)
 
                 # except Exception:  # what exception?
                 # print(Exception)
@@ -173,8 +186,8 @@ class Spider:
 
     def save_to_model(self, detail_dict):
         """
-         Writes scraped data to django ORM models
-                :return: None
+        Writes scraped data to django ORM models
+            :return: None
 
         Details Example:
 
@@ -187,31 +200,31 @@ class Spider:
                        "academic_org": "REH (not department specific)",
                        "enroll_add_consent": "Department Consent Required",
                        "enroll_drop_consent":"Department Consent Required",
-                       "course_description": "This cource simply blows you mind",
-                       "course_title": "Fundamental Computing Theroy",
+                       "course_description": "This course simply blows you mind",
+                       "course_title": "Fundamental Computing Theory",
                        "course_number": "998",
                        "subject_code": "CISC",
-                       "subject_name": "Computer Infomation and Science"
+                       "subject_name": "Computer Information and Science"
                        }
 
         """
 
         course_object = Course(details=CourseDetail.objects.create(
-            career=CareerPossibleValues.objects.create(career=detail_dict["career"]),
+            career=CareerPossibleValues.objects.get_or_create(career=detail_dict["career"]),
             units=detail_dict["units"],
-            grading_basis=GradingPossibleValues.objects.create(grading=detail_dict["grading"]),
+            grading_basis=GradingPossibleValues.objects.get_or_create(grading=detail_dict["grading"]),
             course_components=Components.objects.create(description=detail_dict["components_description"]),
-            campus=CampusPossibleValues.objects.create(campus=detail_dict["campus"]),
-            academic_group=AcademicGroupPossibleValues.objects.create(academic_group=detail_dict["academic_group"]),
-            academic_organization=AcademicOrganizationPossibleValues.objects.create(
+            campus=CampusPossibleValues.objects.get_or_create(campus=detail_dict["campus"]),
+            academic_group=AcademicGroupPossibleValues.objects.get_or_create(academic_group=detail_dict["academic_group"]),
+            academic_organization=AcademicOrganizationPossibleValues.objects.get_or_create(
                 academic_organization=detail_dict["academic_org"]),
             enrollment=EnrollmentInformation.objects.create(enroll_add_consent=detail_dict["enroll_add_consent"],
                                                             enroll_drop_consent=detail_dict["enroll_drop_consent"]),
             description=CourseDescription.objects.create(description=detail_dict["course_description"]), ),
             name=detail_dict["course_title"],
             number=detail_dict["course_number"],
-            subject=SubjectPossibleValues.objects.create(code=detail_dict['subject_code'],
-                                                         name=detail_dict["subject_name"])
+            subject=SubjectPossibleValues.objects.get_or_create(code=detail_dict['subject_code'],
+                                                                name=detail_dict["subject_name"])
         )
         course_object.save()
 
