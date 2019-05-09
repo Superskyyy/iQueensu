@@ -4,11 +4,11 @@
     <div>
         <form action="solus-course-scraper-start/" method="POST">
             {% csrf_token %}
-            <button type="submit">开始爬虫</button>
+            <button type="submit">Start Scraper</button>
         </form>
         <form action="solus-course-scraper-terminate/" method="POST">
             {% csrf_token %}
-            <button type="submit">结束爬虫（无效）</button>
+            <button type="submit">Stop Scraper(Deprecated)</button>
         </form>
     </div>
     <br/>

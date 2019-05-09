@@ -1,7 +1,7 @@
 from QCumber.scraper.assets.models import *
 
 # to run this >>> python manage.py shell < dev_tools/drop_all_scraped_course_data.py
-# will drop all qcumber scraped courses and their tables.
+# will flush all qcumber-scraped-courses info but not drop the tables.
 
 Course.objects.all().delete()
 CourseDetail.objects.all().delete()
