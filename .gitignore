@@ -9,6 +9,7 @@
 .idea/**/dictionaries
 .idea/**/shelf
 .idea/
+.idea
 
 /QCumber_Scraper/settings/Settings.py
 /QCumber/scraper/QCumber_Scraper_Config.json
