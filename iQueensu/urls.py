@@ -13,11 +13,35 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf.urls import include
 from django.contrib import admin
 from django.urls import path
-from django.conf.urls import include, url
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('iQueensu.apps.test_apps.test_app.urls'))
+    path('indexPage/', include('indexPage.urls')),
+    path('qcumber/', include('QCumber.api.urls'))
 ]
+#    path('qapi_v0/', include('QAPI.urls')),
+#    path('qauth_v0/', include('QAuth.urls')),
+
+# Qcumber api
+urlpatterns += [
+    path('', include("QCumber.api.urls"))
+]
+
+#Add URL maps to redirect the base URL to our application
+from django.views.generic import RedirectView
+urlpatterns += [
+    path('', RedirectView.as_view(url='/admin')),
+    ]
+# indexPage/bbs
+
+
+# Use static() to add url mapping to serve static files during development (only)
+from django.conf import settings
+from django.conf.urls.static import static
+
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
