@@ -5,11 +5,11 @@ import sys
 SCRAPER_DEBUG = True
 SCRAPER_LOCAL_TEST = True
 SCRAPER_USER_NAME = 'your user name'  # Edit this
-SCRAPER_USER_PASSWD = 'your passwd'   # Edit this
+SCRAPER_USER_PASSWD = 'your passwd'  # Edit this
 
-SCRAPER_DRIVER = 'geckodriver'        # Set workable driver name here
+SCRAPER_DRIVER = 'geckodriver'  # Set workable driver name here
 
-SCRAPER_DB_CREDENTIALS = {            # Edit this, the db system should be PostgreSQL.
+SCRAPER_DB_CREDENTIALS = {  # Edit this, the db system should be PostgreSQL.
     "database": "",
     "host": "",
     "port": "",

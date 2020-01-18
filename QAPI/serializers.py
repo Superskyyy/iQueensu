@@ -1,5 +1,6 @@
-from .models import QPost
 from rest_framework import serializers
+
+from .models import QPost
 
 
 class QPostSerializer(serializers.HyperlinkedModelSerializer):
