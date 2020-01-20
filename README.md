@@ -1,6 +1,40 @@
 # iQueensu
 Project iQueensu-backend
 
+## Development Instructions
+
+### PyLint
+- Pycharm - Preference - Plugin - Marketplace 
+
+- Search for Pylint, Install it and reboot Pycharm.
+Pylint will appear as an icon in lower left corner, there's one inside VCS - Commit too.
+
+### Testing 
+
+#### Our project is Dockerized
+
+- To build the source code in your local Docker
+    - The docker container will automatically reflect latest change of source code.
+    So don't build again, run ```> docker-compose up ``` instead.
+    
+    1. Clone the code, make sure docker is running
+    2. Make sure the DOCKER Variable is set to True in settings.py
+    3. Run following commands
+        ```bash
+        docker-compose run web python manage.py migrate
+        
+        [Win10]> winpty docker-compose run web python manage.py createsuperuser
+        
+        [Unix]> docker-compose run web python manage.py createsuperuser
+        
+        docker-compose build
+        
+        docker-compose up
+
+
+        ```
+- To pull from remote image.. Implementing
+
 <a name="Contributors"/><br/>
 ## Contributors 
 #### `Usernames are listed in alphabetical order`
@@ -39,7 +73,7 @@ We aim to build and provide a better community for Queen's Students and Alumni.
 
 ## Deployment 
 
-[Bash Script] - Triggered by Gitlab CI
+[Bash Script] - Triggered by Git Actions CI
 Not implemented. 
 
 #### Python path can be found by
