@@ -25,6 +25,7 @@ PyJWT = "==1.7.1"
 pyspider = "*"
 googlemaps = "*"
 "psycopg2-binary" = "*"
+pylint = "*"
 
 [dev-packages]
 
