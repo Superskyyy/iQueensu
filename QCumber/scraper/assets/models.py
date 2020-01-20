@@ -1,4 +1,6 @@
 from django.db import models
+
+
 # Create your models here.
 
 
@@ -60,7 +62,6 @@ class EnrollmentInformation(models.Model):
 
     def __str__(self):
         return self.enroll_add_consent + "-" + self.enroll_drop_consent
-
 
 
 class CourseDescription(models.Model):

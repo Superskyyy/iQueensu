@@ -12,4 +12,4 @@ class QPost(models.Model):
     post_date = models.DateTimeField('date posted')
 
     def __str__(self):
-        return str(self.post_id) + "-" + self.post_title
+        return str(self.post_id) + "-" + str(self.post_title)

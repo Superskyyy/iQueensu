@@ -35,6 +35,9 @@ class Spider:
 
     def __init__(self):
 
+        ######for testing flush db before doing
+        self.flush_db()
+
         # logging stuff
         logging.basicConfig(level=logging.DEBUG,
                             format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
@@ -128,12 +131,12 @@ class Spider:
                 item = driver.find_element_by_id("CRSE_NBR$" + str(i))
                 course_nbr = item.text
 
-                if ("UNS" in course_nbr):
+                if "UNS" in course_nbr:
                     self.logger.info("Unspecified found, ignored for now. - Sky")
                     i += 1
                     continue
                 course_title = driver.find_element_by_id("CRSE_TITLE$" + str(i)).text
-                if ("***" in course_title):
+                if "***" in course_title:
                     self.logger.info("Multiple offering course found, ignored for now. - Sky")
                     i += 1
                     continue
@@ -166,6 +169,7 @@ class Spider:
                 detail_dict["enroll_add_consent"] = driver.find_element_by_id("SSR_CRSE_OFF_VW_CONSENT$0").text
                 detail_dict["enroll_drop_consent"] = driver.find_element_by_id(
                     "SSR_CRSE_OFF_VW_SSR_DROP_CONSENT$0").text
+                # FIXME add enrollment prerequisites
                 detail_dict["course_description"] = driver.find_element_by_id("SSR_CRSE_OFF_VW_DESCRLONG$0").text
                 detail_dict["course_title"] = course_title
                 detail_dict["course_number"] = course_nbr
@@ -176,13 +180,26 @@ class Spider:
 
                 # save data to django model
                 # print(detail_dict.values())
-                #self.save_to_model(detail_dict)
+                self.save_to_model(detail_dict)
 
                 # except Exception:  # what exception?
                 # print(Exception)
                 i = i + 1
             # instruction_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "assets", "process.json")
             # Process(driver).load(instruction_path).run()
+
+    def flush_db(self):
+        Course.objects.all().delete()
+        CourseDetail.objects.all().delete()
+        AcademicGroupPossibleValues.objects.all().delete()
+        AcademicOrganizationPossibleValues.objects.all().delete()
+        CampusPossibleValues.objects.all().delete()
+        CareerPossibleValues.objects.all().delete()
+        Components.objects.all().delete()
+        CourseDescription.objects.all().delete()
+        EnrollmentInformation.objects.all().delete()
+        GradingPossibleValues.objects.all().delete()
+        SubjectPossibleValues.objects.all().delete()
 
     def save_to_model(self, detail_dict):
         """
@@ -208,23 +225,26 @@ class Spider:
                        }
 
         """
-
+        print(detail_dict)
+        # get_or_create returns tuple (object-bool)
         course_object = Course(details=CourseDetail.objects.create(
-            career=CareerPossibleValues.objects.get_or_create(career=detail_dict["career"]),
+            career=CareerPossibleValues.objects.get_or_create(career=detail_dict["career"])[0],
             units=detail_dict["units"],
-            grading_basis=GradingPossibleValues.objects.get_or_create(grading=detail_dict["grading"]),
-            course_components=Components.objects.create(description=detail_dict["components_description"]),
-            campus=CampusPossibleValues.objects.get_or_create(campus=detail_dict["campus"]),
-            academic_group=AcademicGroupPossibleValues.objects.get_or_create(academic_group=detail_dict["academic_group"]),
+            grading_basis=GradingPossibleValues.objects.get_or_create(grading=detail_dict["grading"])[0],
+            course_components=Components.objects.get_or_create(description=detail_dict["components_description"])[0],
+            campus=CampusPossibleValues.objects.get_or_create(campus=detail_dict["campus"])[0],
+            academic_group=
+            AcademicGroupPossibleValues.objects.get_or_create(academic_group=detail_dict["academic_group"])[0],
             academic_organization=AcademicOrganizationPossibleValues.objects.get_or_create(
-                academic_organization=detail_dict["academic_org"]),
-            enrollment=EnrollmentInformation.objects.create(enroll_add_consent=detail_dict["enroll_add_consent"],
-                                                            enroll_drop_consent=detail_dict["enroll_drop_consent"]),
-            description=CourseDescription.objects.create(description=detail_dict["course_description"]), ),
+                academic_organization=detail_dict["academic_org"])[0],
+            enrollment=EnrollmentInformation.objects.get_or_create(enroll_add_consent=detail_dict["enroll_add_consent"],
+                                                                   enroll_drop_consent=detail_dict[
+                                                                       "enroll_drop_consent"])[0],
+            description=CourseDescription.objects.get_or_create(description=detail_dict["course_description"])[0], ),
             name=detail_dict["course_title"],
             number=detail_dict["course_number"],
             subject=SubjectPossibleValues.objects.get_or_create(code=detail_dict['subject_code'],
-                                                                name=detail_dict["subject_name"])
+                                                                name=detail_dict["subject_name"])[0]
         )
         course_object.save()
 

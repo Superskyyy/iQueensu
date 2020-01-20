@@ -74,14 +74,14 @@ class Handler(BaseHandler):
 
         # Descriptions - some descriptions have strong tags.
         try:
-            dirty_info = (response.doc('.showMoreChild-3420331552 p') \
+            dirty_info = (response.doc('.showMoreChild-3420331552 p')
                           .contents())
             dirty_info_merged = '**' + '**'.join([i.text() \
                                                   for i in dirty_info.items() \
                                                   if i.text() != ''])
         except:
             # extremely rare bullshit extreme cases, html structure changed
-            dirty_info_strong = (response.doc('strong') \
+            dirty_info_strong = (response.doc('strong')
                                  .contents())
 
             dirty_info_merged = '**' + '**'.join([i.text() \

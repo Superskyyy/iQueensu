@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 
 import os
 import platform
-import sys
 
 try:
     from QCumber.scraper.assets.settings import SCRAPER_DB_CREDENTIALS as DB
@@ -66,6 +65,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
 ]
+"""
 
 # apps for auth purposes
 INSTALLED_APPS += [
@@ -76,23 +76,42 @@ INSTALLED_APPS += [
     'allauth.account',
     'rest_auth.registration',
     'QAuth',
-    'QUser'
+    'QUser',
 ]
+"""
 
 # app for Qcumber
 INSTALLED_APPS += [
     'QCumber'
 ]
 
+# Full-text search support dependency
+INSTALLED_APPS += [
+    'haystack'
+]
+
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+        'URL': 'http://127.0.0.1:9200/',
+        'INDEX_NAME': 'haystack',
+    },
+}
+
+"""
 if LOCAL_DEBUG:
     INSTALLED_APPS += [
         'corsheaders',
     ]
 
+"""
+
 # for all-auth usage:
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 SITE_ID = 1
-AUTH_USER_MODEL = 'QUser.CustomUser'
+# AUTH_USER_MODEL = 'QUser.CustomUser'
 
 # register our apps here ^^
 
@@ -139,23 +158,24 @@ LOCAL_DEBUG = True
 if LOCAL_DEBUG:
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'postgres',
+            'USER': 'postgres',
+            'HOST': 'db',
+            'PORT': 5432,
         }
     }
 else:
 
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': DB["database"],
-            'USER': DB["username"],
-            'PASSWORD': DB["password"],
-            'HOST': DB["host"],
-            'PORT': DB["port"],
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'postgres',
+            'USER': 'postgres',
+            'HOST': 'db',
+            'PORT': 5432,
         }
     }
-
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
 
@@ -196,12 +216,14 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static")
 # STATICFILES_DIRS = [
 #           os.path.join(BASE_DIR, "static"),
 #          ]
-
+"""
 # RestAPI configurations
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend'),
     'PAGE_SIZE': 10
 }
+"""
 
 REST_API_ADDRESS = 'qapi_v0'
 

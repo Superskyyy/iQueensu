@@ -3,6 +3,8 @@ import datetime
 import pymongo
 from pyspider.result import ResultWorker
 
+# This is deprecated change to postgresql
+
 TIME = str(datetime.datetime.now())  # timestamp results in db
 
 
@@ -12,8 +14,8 @@ class MyResultWorker(ResultWorker):
 
         if not result:
             return
-        client = pymongo.MongoClient(host='35.183.130.225', \
-                                     port=27017, username="root", \
+        client = pymongo.MongoClient(host='35.183.130.225',
+                                     port=27017, username="root",
                                      password="iqueensu", authSource="admin")
 
         db = client['qhousing_result_dev']

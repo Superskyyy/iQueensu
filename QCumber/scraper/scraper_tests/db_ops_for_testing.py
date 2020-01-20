@@ -4,6 +4,8 @@ This module is for spider => PostgreSQL operations
 import datetime
 import json
 
+import psycopg2
+
 try:
     from QCumber.scraper.assets.settings import SCRAPER_DB_CREDENTIALS as DB
 except ModuleNotFoundError as e:
