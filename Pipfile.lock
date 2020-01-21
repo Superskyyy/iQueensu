@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "1f28050380a7d31bddbeca96c8acaadb0f1bb1f98eb8c793157575bb9fb79824"
+            "sha256": "3c55175d028e9a5c39c411e5ae0aa22f431da6afee47ef1f59acc5c432c2f05e"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -162,22 +162,6 @@
             ],
             "index": "pypi",
             "version": "==3.10.3"
-        },
-        "drf-haystack": {
-            "hashes": [
-                "sha256:8a51938ff66301b5a25349b3b2cb745d5c20144887301e319466c980a8995bd7",
-                "sha256:fdc7a10563d3c770c9ce9727385df0058166d6e3310c1d64de8d9b8d8db78e76"
-            ],
-            "index": "pypi",
-            "version": "==1.8.6"
-        },
-        "elasticsearch": {
-            "hashes": [
-                "sha256:0140787216646e1eb7eb001f8146aff7071d7ca438854249787b6cc221ddd266",
-                "sha256:283a6afa5dc08c21016c295b5237fbd9c74895b0b297ceb97c879ec7d67a5f47"
-            ],
-            "index": "pypi",
-            "version": "==7.1.0"
         },
         "flask": {
             "hashes": [

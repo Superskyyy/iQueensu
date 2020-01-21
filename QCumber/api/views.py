@@ -1,29 +1,45 @@
-# Create your views here.
+"""
+QCumber views here.
+"""
 
-from drf_haystack.serializers import HaystackSerializer
-from drf_haystack.viewsets import HaystackViewSet
-from rest_framework import generics
+from rest_framework import filters
+from rest_framework import viewsets
 
-from QCumber.api.elastic_search.search_indexes import CourseIndex
-from QCumber.scraper.assets.models import *
-
-
-class CourseSerializer(HaystackSerializer):
-    class Meta:
-        index_classes = [CourseIndex]
-        fields = [
-            "text", "number", "name"
-        ]
+from QCumber.api.serializers import *
 
 
-class CourseSearchView(HaystackViewSet):
-    index_models = [Course]
-    serializer_class = CourseSerializer
+class CourseDetailViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows courses to be viewed or edited.
+    """
+    queryset = CourseDetail.objects.all()
+    serializer_class = CourseDetailSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = [
+        "units",
+        "career",
+        "grading",
+        "components",
+        "campus",
+        "academic_group",
+        "academic_organization",
+        "enroll_add_consent",
+        "enroll_drop_consent",
+        "course_description"]
 
 
-# Used for read-write endpoints to represent a collection of model instances.
-
-
-class QCumberListCreate(generics.ListCreateAPIView):
+# https://www.django-rest-framework.org/api-guide/filtering/#searchfilter
+# https://stackoverflow.com/questions/24861252/django-rest-framework-foreign-keys-and-filtering
+class CourseViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows groups to be viewed or edited.
+    """
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ["=number",
+                     "@name",
+                     "^details__units",
+                     "@details__description__description",
+                     "@details__campus__campus"]
+    # change to @ for name

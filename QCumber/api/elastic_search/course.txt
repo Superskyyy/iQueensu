@@ -1,4 +1,0 @@
-{{ object.number }}
-    {% for a in name%}
-        {{ a }}
-    {% endfor %}
