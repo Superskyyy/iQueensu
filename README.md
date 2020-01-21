@@ -23,7 +23,7 @@ Pylint will appear as an icon in lower left corner, there's one inside VCS - Com
         ```bash
         docker-compose run web python manage.py migrate
         
-        [Win10]> winpty docker-compose run web python manage.py createsuperuser
+        [Windows Git Bash]> winpty docker-compose run web python manage.py createsuperuser
         
         [Unix]> docker-compose run web python manage.py createsuperuser
         
