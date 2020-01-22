@@ -12,16 +12,16 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 
 import os
 import platform
-
+import sys
 try:
     from QCumber.scraper.assets.settings import SCRAPER_DB_CREDENTIALS as DB
-except ModuleNotFoundError as e:
+except ModuleNotFoundError as error:
     print('''
         Please copy QCumber/scraper/assets/settings_example.py as settings.py in the same folder, 
         and edit the settings as instructed in the file. 
         #Notice, settings.py is ignored by .gitignore file, everything in that file WILL BE LOST in CVS.
     ''')
-    exit(1)  # force to stop
+    sys.exit(1)  # force to stop
 
     # make PyCharm feel happy even if there's no settings.py
     # Theoretically, Following line should be never executed.
@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'QAPI.apps.QapiConfig',
     'django.contrib.admin',
     'django.contrib.auth',
+    'django.contrib.postgres',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -84,29 +85,6 @@ INSTALLED_APPS += [
 INSTALLED_APPS += [
     'QCumber'
 ]
-
-# Full-text search support dependency
-INSTALLED_APPS += [
-    'haystack'
-]
-
-HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
-
-HAYSTACK_CONNECTIONS = {
-    'default': {
-        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
-        'URL': 'http://127.0.0.1:9200/',
-        'INDEX_NAME': 'haystack',
-    },
-}
-
-"""
-if LOCAL_DEBUG:
-    INSTALLED_APPS += [
-        'corsheaders',
-    ]
-
-"""
 
 # for all-auth usage:
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
@@ -154,8 +132,12 @@ WSGI_APPLICATION = 'iQueensu.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
-LOCAL_DEBUG = True
-if LOCAL_DEBUG:
+# This can be used to toggle between your local testing db (db.sqlite3) and the PostgreSQL backend:
+DOCKER = True
+
+# Database
+# https://docs.djangoproject.com/en/2.1/ref/settings/#databases
+if DOCKER:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
@@ -166,16 +148,13 @@ if LOCAL_DEBUG:
         }
     }
 else:
-
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'postgres',
-            'USER': 'postgres',
-            'HOST': 'db',
-            'PORT': 5432,
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         }
     }
+
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
 

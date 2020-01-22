@@ -1,3 +1,7 @@
+"""
+This is the models for QCumber courses,
+Only Course and CourseDetails are serialized.
+"""
 from django.db import models
 
 
@@ -6,6 +10,9 @@ from django.db import models
 
 # These table are claimed for better performance
 class CareerPossibleValues(models.Model):
+    """
+    Career table for reusable entries
+    """
     career = models.CharField(max_length=128)
 
     def __str__(self):
@@ -13,6 +20,9 @@ class CareerPossibleValues(models.Model):
 
 
 class SubjectPossibleValues(models.Model):
+    """
+    Subject table for reusable entries, this table contains the subject code + name
+    """
     code = models.CharField(max_length=128)
     name = models.CharField(max_length=128)
 
@@ -21,6 +31,9 @@ class SubjectPossibleValues(models.Model):
 
 
 class CampusPossibleValues(models.Model):
+    """
+    Campus, e.g. Main
+    """
     campus = models.CharField(max_length=128)
 
     def __str__(self):
@@ -28,6 +41,9 @@ class CampusPossibleValues(models.Model):
 
 
 class GradingPossibleValues(models.Model):
+    """
+    Grading. E.g. "grading": "Pass/Fail",
+    """
     grading = models.CharField(max_length=128)
 
     def __str__(self):
@@ -35,6 +51,9 @@ class GradingPossibleValues(models.Model):
 
 
 class AcademicGroupPossibleValues(models.Model):
+    """
+    E.g. "academic_group": "School of Graduate Studies",
+    """
     academic_group = models.CharField(max_length=128)
 
     def __str__(self):
@@ -42,14 +61,19 @@ class AcademicGroupPossibleValues(models.Model):
 
 
 class AcademicOrganizationPossibleValues(models.Model):
+    """
+    E.g. "academic_organization": "REH (not department specific)",
+    """
     academic_organization = models.CharField(max_length=128)
 
     def __str__(self):
         return self.academic_organization
 
 
-# these tables are for separating the data
 class Components(models.Model):
+    """
+    E.g. "components": "Seminar",
+    """
     description = models.TextField(null=True)
 
     def __str__(self):
@@ -57,6 +81,11 @@ class Components(models.Model):
 
 
 class EnrollmentInformation(models.Model):
+    """
+    E.g.
+    "enroll_add_consent": "Department Consent Required",
+    "enroll_drop_consent": "Department Consent Required",
+    """
     enroll_add_consent = models.TextField(null=True)
     enroll_drop_consent = models.TextField(null=True)
 
@@ -65,6 +94,9 @@ class EnrollmentInformation(models.Model):
 
 
 class CourseDescription(models.Model):
+    """
+    Simply course description as a Text.
+    """
     description = models.TextField(null=True)
 
     def __str__(self):
@@ -73,13 +105,16 @@ class CourseDescription(models.Model):
 
 # actual representative tables
 class CourseDetail(models.Model):
+    """
+    All CourseDetails including following fields
+    """
     career = models.ForeignKey(
         CareerPossibleValues,
         on_delete=models.SET_NULL,
         blank=True,
         null=True,
     )
-    units = models.DecimalField(max_digits=4, decimal_places=2)
+    units = models.TextField(null=True)
     grading_basis = models.ForeignKey(
         GradingPossibleValues,
         on_delete=models.SET_NULL,
@@ -97,6 +132,7 @@ class CourseDetail(models.Model):
         on_delete=models.SET_NULL,
         blank=True,
         null=True,
+        related_name="campus_names"
     )
     academic_group = models.ForeignKey(
         AcademicGroupPossibleValues,
@@ -136,13 +172,18 @@ class CourseDetail(models.Model):
 
 
 class Course(models.Model):
+    """
+    All Courses including following fields
+    """
+    # Multiple courses can share the same subject.
     subject = models.ForeignKey(
         SubjectPossibleValues,
         on_delete=models.CASCADE,
     )
     number = models.CharField(max_length=128)
-    # set as temp pk
     name = models.CharField(max_length=128)
+
+    # Multiple courses can share the same details? This can be changed to OneToOneField.
     details = models.ForeignKey(
         CourseDetail,
         on_delete=models.CASCADE,
@@ -156,6 +197,9 @@ class Course(models.Model):
 
 
 class Log(models.Model):
+    """
+    Not serialized.
+    """
     time = models.DateTimeField(auto_now=True)
     source = models.CharField(max_length=128)
     type = models.CharField(max_length=32)
