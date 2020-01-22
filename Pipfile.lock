@@ -185,11 +185,11 @@
         },
         "googlemaps": {
             "hashes": [
-                "sha256:afa881a76a79e08ceaa918a61df12e08679d04b963454415680d9faed0bb5177",
-                "sha256:f494a10b18252a5038eac9e8d47b877f7f29357a10c0450719b88b92a934d4e5"
+                "sha256:63ccaca222b2bdb2b14bf09292fe833e21a98bbc4324d1e5fc6912fcca28fd8a",
+                "sha256:ca175728e455eee04bd48d6da5a15db5e2f9164d2ee54efd1850e430a576b736"
             ],
             "index": "pypi",
-            "version": "==4.0.0"
+            "version": "==4.1.0"
         },
         "idna": {
             "hashes": [
