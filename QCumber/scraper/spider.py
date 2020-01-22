@@ -34,7 +34,6 @@ except ModuleNotFoundError as error:
 
     # make PyCharm feel happy even if there's no settings.py
     # Theoretically, Following line should be never executed.
-    from QCumber.scraper.assets.settings_example import *
 
 
 # import db_ops_for_testing
@@ -89,9 +88,6 @@ class Spider:
         # TODO: 写完websocket那块
 
         # FIXME: inject js to remark the special courses.
-        # Selenium setup - this is replaced by remote driver in docker
-        self.scraper_driver_dir = self.find_driver(SCRAPER_DRIVER)
-        assert self.scraper_driver_dir is not None, 'Driver not found!'
 
         self.option = webdriver.FirefoxOptions()
 
@@ -120,8 +116,7 @@ class Spider:
         with webdriver.Remote(options=self.option, command_executor="http://chrome:4444/wd/hub",
                               desired_capabilities=DesiredCapabilities.CHROME) as driver:
             driver.get(
-                'https://saself.ps.queensu.ca\
-                /psc/saself/EMPLOYEE/HRMS/c/SA_LEARNER_SERVICES.SSS_BROWSE_CATLG_P.GBL')
+                'https://saself.ps.queensu.ca/psc/saself/EMPLOYEE/HRMS/c/SA_LEARNER_SERVICES.SSS_BROWSE_CATLG_P.GBL')
 
             wait = WebDriverWait(driver, 10)
             wait.until(presence_of_element_located((By.ID, 'username')))
@@ -295,43 +290,6 @@ class Spider:
         print("Current OS version: " + sys.platform)
         source = os.environ["PATH"].split(";" if sys.platform.__contains__("win") else ":")
         os.sys.path.extend(source)
-
-    def find_driver_raw(self, destiny):
-        """
-        Search for local driver, note we use remote driver in docker
-        :param destiny:
-        :return:
-        """
-        print("Start searching driver under available path")
-        self.inject_sys_path()
-
-        for path in os.sys.path:
-            print(path)
-            for rel_path, dirs, files in os.walk(path):
-                if destiny in files:
-                    print("Driver", destiny, "found!")
-                    return os.path.join(path, rel_path, destiny)
-        return None
-
-    def find_driver(self, destiny):
-        """
-        ...
-        :param destiny:
-        :return:
-        """
-        config = Settings(driver_path=destiny)
-        try:
-            print("Start validating driver")
-            config.load_from_file()
-            if not os.path.exists(config.data['driver_path']):
-                config.data['driver_path'] = self.find_driver_raw(destiny)
-                config.save_to_file()
-        except exceptions.WebDriverException:
-            config.data['driver_path'] = self.find_driver_raw(destiny)
-            config.save_to_file()
-
-        print("Driver", SCRAPER_DRIVER, "located at", config.data['driver_path'])
-        return config.data['driver_path']
 
     @staticmethod
     def scraper_start():
