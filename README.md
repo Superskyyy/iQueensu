@@ -1,8 +1,12 @@
 # iQueensu
-Project iQueensu-backend
+* [Frontend](https://github.com/Superskyyy/iQueensu-frontend) Portal to iQueensu - frontend repo
 
 ## Development Instructions
-
+### Best practices
+- Always push to personal branch and open a PR.
+- Request review from a peer dev.
+- Follow PEP 8 coding style, follow Pylint.
+- Always run a test after you modify anything.
 ### PyLint
 - Pycharm - Preference - Plugin - Marketplace 
 
@@ -11,6 +15,12 @@ Pylint will appear as an icon in lower left corner, there's one inside VCS - Com
 
 ### Testing 
 
+#### Configurations
+1. Modify settings.py in iQueensu, make sure docker is set to `True`
+2. Duplicate settings_example.py to settings.py in QCumber - scraper - assets.
+Fill in corresponding Queen's SSO credentials. This step is crucial to the proper running of SOLUS Scraper.
+ 
+- To run the project in pure local env (Not recommended), set docker to False. Note you may encounter multiple errors as this method is deprecated.
 #### Our project is Dockerized
 
 - To build the source code in your local Docker
@@ -73,7 +83,7 @@ We aim to build and provide a better community for Queen's Students and Alumni.
 
 ## Requirements
 
-* [Python 3.6+](https://www.python.org/)
+* [Python 3.7+](https://www.python.org/)
 * `python` on the PATH
 
 #### Optional ()
@@ -83,7 +93,7 @@ We aim to build and provide a better community for Queen's Students and Alumni.
 ## Deployment 
 
 [Bash Script] - Triggered by Git Actions CI
-Not implemented. 
+Implementing...
 
 #### Python path can be found by
   
