@@ -5,7 +5,7 @@ name = "pypi"
 
 [packages]
 "asn1crypto" = "==0.24.0"
-cffi = "==1.12.3"
+cffi = "==1.13.2"
 cryptography = "==2.8"
 django-cors-headers = "==3.2.1"
 django-haystack = "==2.8.1"
