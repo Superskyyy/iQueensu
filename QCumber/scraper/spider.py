@@ -34,7 +34,6 @@ except ModuleNotFoundError as error:
 
     # make PyCharm feel happy even if there's no settings.py
     # Theoretically, Following line should be never executed.
-    from QCumber.scraper.assets.settings_example import *
 
 
 # import db_ops_for_testing
@@ -117,8 +116,7 @@ class Spider:
         with webdriver.Remote(options=self.option, command_executor="http://chrome:4444/wd/hub",
                               desired_capabilities=DesiredCapabilities.CHROME) as driver:
             driver.get(
-                'https://saself.ps.queensu.ca\
-                /psc/saself/EMPLOYEE/HRMS/c/SA_LEARNER_SERVICES.SSS_BROWSE_CATLG_P.GBL')
+                'https://saself.ps.queensu.ca/psc/saself/EMPLOYEE/HRMS/c/SA_LEARNER_SERVICES.SSS_BROWSE_CATLG_P.GBL')
 
             wait = WebDriverWait(driver, 10)
             wait.until(presence_of_element_located((By.ID, 'username')))
