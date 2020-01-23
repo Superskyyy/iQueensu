@@ -25,7 +25,6 @@ googlemaps = "*"
 "psycopg2-binary" = "*"
 pylint = "*"
 pipfile = "*"
-pre-commit = "*"
 
 [dev-packages]
 
