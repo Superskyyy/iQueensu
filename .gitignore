@@ -10,6 +10,7 @@
 .idea/**/shelf
 .idea/**/Project.xml
 .idea/
+.idea
 
 /QCumber_Scraper/settings/Settings.py
 /QCumber/scraper/QCumber_Scraper_Config.json
