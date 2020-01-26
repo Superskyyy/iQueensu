@@ -6,7 +6,16 @@ jobs:
     steps:
       - checkout
       - run: echo "hello world"
-    branches:
-      only:
-      - circle-test
-      - test-deploy
+
+workflows:
+# workflows version Should currently(2020-1-25) be 2
+# https://circleci.com/docs/2.0/configuration-reference/#workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
+          filters:
+            branches:
+              only:
+                - circle-test
+                - test-deploy
