@@ -1,6 +1,8 @@
 version: 2.1
 jobs:
   build_dev:
+    machine: true
+    working_directory: ~/iqueensu-dev-build
     steps:
       - checkout
       - run:
@@ -25,5 +27,5 @@ workflows:
               only:
                 - circle-test
                 - dev-deploy
-      - release_deploy:
+      #- release_deploy:
           # leaved blank for further configuration
