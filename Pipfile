@@ -30,8 +30,4 @@ pre-commit = "*"
 [dev-packages]
 
 [requires]
-<<<<<<< HEAD
 python_version = "3.7"
-=======
-python_version = "3.7"
->>>>>>> Refactoring legacy code
