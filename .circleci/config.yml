@@ -9,12 +9,12 @@ jobs:
 #      - run:
 #          name: Django Migrate
 #          command: docker-compose run web python manage.py migrate
-#      - run:
-#          name: Create Super User
-#          command: |
-#            csu_prefix="from django.contrib.auth.models import User; User.objects.create_superuser("
-#            csu_vars="'${DEFAULT_DJANGO_SUPERUSER_NAME}', '${DEFAULT_DJANGO_SUPERUSER_EMAIL}', '${DEFAULT_DJANGO_SUPERUSER_PASSWD}')"
-#            echo "${csu_prefix}${csu_vars}"
+      - run:
+          name: Create Super User
+          command: |
+            csu_prefix="from django.contrib.auth.models import User; User.objects.create_superuser("
+            csu_vars="'${DEFAULT_DJANGO_SUPERUSER_NAME}', '${DEFAULT_DJANGO_SUPERUSER_EMAIL}', '${DEFAULT_DJANGO_SUPERUSER_PASSWD}')"
+            echo "${csu_prefix}${csu_vars}"
 
 workflows:
 # workflows version Should currently(2020-1-25) be 2
