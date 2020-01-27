@@ -3,6 +3,11 @@ version: '3'
 services:
   db:
     image: postgres
+  chrome:
+    image: selenium/standalone-chrome:latest
+    ports:
+      - "4444:4444"
+    shm_size: 2g
   web:
     build: .
     image: iqueensu_backend:latest_dev
@@ -14,8 +19,3 @@ services:
     depends_on:
       - db
       - chrome
-  chrome:
-    image: selenium/standalone-chrome:latest
-    ports:
-      - "4444:4444"
-    shm_size: 2g

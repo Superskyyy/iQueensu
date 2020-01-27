@@ -1,0 +1,55 @@
+version: 2.1
+jobs:
+  build_dev:
+    machine: true
+    working_directory: ~/iqueensu-dev-build
+    steps:
+      - checkout
+      - run: ls -la
+#      - run:
+#          name: Django Migrate
+#          command: docker-compose run web python manage.py migrate
+      - run:
+          name: Generate Super User Shell Command
+          command: |
+            csu_prefix="from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser("
+            csu_vars="'${DEFAULT_DJANGO_SUPERUSER_NAME}', '${DEFAULT_DJANGO_SUPERUSER_EMAIL}', '${DEFAULT_DJANGO_SUPERUSER_PASSWD}')"
+            csu_final="${csu_prefix}${csu_vars}"
+#      - run:
+#          name: Create Super User
+#          command: echo csu_final | python manage.py shell
+      - run:
+          name: Build Images
+          command: docker-compose build
+# Currently does not build full functionality
+      - run:
+          name: Package Images
+          command: |
+            mkdir ./build_out
+            docker save $(docker images -q) -o ./build_out/packaged_dev_images.tar
+            docker images | sed '1d' | awk '{print $1 " " $2 " " $3}' > ./build_out/dev_images.list
+# How to import images:
+# docker load -i /path/to/save/packaged_dev_images.tar
+# Then tag them by the same way it should be. To make docker-compose work
+# while read REPOSITORY TAG IMAGE_ID
+# do
+#        echo "== Tagging $REPOSITORY $TAG $IMAGE_ID =="
+#        docker tag "$IMAGE_ID" "$REPOSITORY:$TAG"
+# done < /path/to/save/dev_images.list
+      - store_artifacts:
+          path: ./build_out
+
+workflows:
+# workflows version Should currently(2020-1-25) be 2
+# https://circleci.com/docs/2.0/configuration-reference/#workflows:
+  version: 2
+  deploy_dev:
+    jobs:
+      - build_dev:
+          filters:
+            branches:
+              only:
+                - circle-test
+                - dev-deploy
+      #- release_deploy:
+          # leaved blank for further configuration
