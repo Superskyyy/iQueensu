@@ -76,12 +76,6 @@ jobs:
               docker-compose --detach up
             "
 
-  dev_deploy_done:
-    machine: true
-    steps:
-      - run: echo "Done"
-
-
 workflows:
 # workflows version Should currently(2020-1-25) be 2
 # https://circleci.com/docs/2.0/configuration-reference/#workflows:
@@ -97,8 +91,5 @@ workflows:
       - deploy_to_dev_server:
           requires:
             - build_dev
-      - dev_deploy_done:
-          requires:
-            - deploy_to_dev_server
       #- release_deploy:
           # leaved blank for further configuration

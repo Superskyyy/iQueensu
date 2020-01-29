@@ -4,7 +4,6 @@ then
   scp ./iQueensu.tar.gz "${TEST_USER_NAME}"@"${TEST_SERVER}:~/";
   ssh "${TEST_USER_NAME}"@"${TEST_SERVER}" "
     docker stop \$(docker ps -a -q)
-    docker rm \$(docker ps -a -q)
     [ -d './iqueensu-dev-build' ] && rm -rf ./iqueensu-dev-build;
     tar -xzvf iQueensu.tar.gz;
     rm ./iQueensu.tar.gz;
