@@ -65,6 +65,12 @@ jobs:
             chmod +x ./deploy_dev_image.sh
             sh ./deploy_dev_image.sh
       - run:
+          name: Generate Super User Shell Command
+          command: |
+            csu_prefix="from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser("
+            csu_vars="'${DEFAULT_DJANGO_SUPERUSER_NAME}', '${DEFAULT_DJANGO_SUPERUSER_EMAIL}', '${DEFAULT_DJANGO_SUPERUSER_PASSWD}');"
+            csu_final="${csu_prefix}${csu_vars}"
+      - run:
           name: Build on dev server
           command: |
             ssh "${TEST_USER_NAME}"@"${TEST_SERVER}" "

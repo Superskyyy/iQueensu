@@ -1,3 +1,11 @@
+Develop Build [![CircleCI](https://circleci.com/gh/Superskyyy/iQueensu/tree/dev-deploy.svg?style=svg&circle-token=84a2db9e6a8fdb65f43579a20d0667f7d31db266)](https://circleci.com/gh/Superskyyy/iQueensu/tree/dev-deploy)
+[![Website cv.lbesson.qc.to](https://img.shields.io/website-up-down-green-red/http/cv.lbesson.qc.to.svg)](http://api.somiona.live:23432/)
+Master [![CircleCI](https://circleci.com/gh/Superskyyy/iQueensu/tree/master.svg?style=svg&circle-token=84a2db9e6a8fdb65f43579a20d0667f7d31db266)](https://circleci.com/gh/Superskyyy/iQueensu/tree/master)
+
+[![CodeFactor](https://www.codefactor.io/repository/github/superskyyy/iqueensu/badge?s=d89136c4e9d03ccf435d607cd6186a4e16265702)](https://www.codefactor.io/repository/github/superskyyy/iqueensu)
+[![GitHub issues](https://img.shields.io/github/issues/Naereen/StrapDown.js.svg)](https://GitHub.com/Naereen/StrapDown.js/issues/)
+[![GitHub pull-requests](https://img.shields.io/github/issues-pr/Naereen/StrapDown.js.svg)](https://GitHub.com/Naereen/StrapDown.js/pull/)
+
 # iQueensu
 * [Frontend](https://github.com/Superskyyy/iQueensu-frontend) Portal to iQueensu - frontend repo
 
