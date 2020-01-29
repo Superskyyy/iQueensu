@@ -6,40 +6,40 @@ jobs:
     steps:
       - checkout
       - run: ls -la
-#      - run:
-#          name: Build Images
-#          command: docker-compose build
-#      - run:
-#          name: Django Migrate
-#          command: docker-compose run web python manage.py migrate
-#      - run:
-#          name: Generate Super User Shell Command
-#          command: |
-#            csu_prefix="from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser("
-#            csu_vars="'${DEFAULT_DJANGO_SUPERUSER_NAME}', '${DEFAULT_DJANGO_SUPERUSER_EMAIL}', '${DEFAULT_DJANGO_SUPERUSER_PASSWD}')"
-#            csu_final="${csu_prefix}${csu_vars}"
-#      - run:
-#          name: Create Super User
-#          command: echo $csu_final | docker-compose run web python manage.py shell
-#      - run:
-#          name: Build Images *2*
-#          command: docker-compose build
-#      - run:
-#          name: Package Images
-#          command: |
-#            mkdir ./build_out
-#            docker save $(docker images -q) -o ./build_out/packaged_dev_images.tar
-#            docker images | sed '1d' | awk '{print $1 " " $2 " " $3}' > ./build_out/dev_images.list
-## How to import images:
-## docker load -i /path/to/save/packaged_dev_images.tar
-## Then tag them by the same way it should be. To make docker-compose work
-## while read REPOSITORY TAG IMAGE_ID
-## do
-##        echo "== Tagging $REPOSITORY $TAG $IMAGE_ID =="
-##        docker tag "$IMAGE_ID" "$REPOSITORY:$TAG"
-## done < /path/to/save/dev_images.list
-#      - store_artifacts:
-#          path: ./build_out
+      - run:
+          name: Build Images
+          command: docker-compose build
+      - run:
+          name: Django Migrate
+          command: docker-compose run web python manage.py migrate
+      - run:
+          name: Generate Super User Shell Command
+          command: |
+            csu_prefix="from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser("
+            csu_vars="'${DEFAULT_DJANGO_SUPERUSER_NAME}', '${DEFAULT_DJANGO_SUPERUSER_EMAIL}', '${DEFAULT_DJANGO_SUPERUSER_PASSWD}');"
+            csu_final="${csu_prefix}${csu_vars}"
+      - run:
+          name: Create Super User
+          command: echo $csu_final | docker-compose run web python manage.py shell
+      - run:
+          name: Build Images *2*
+          command: docker-compose build
+      - run:
+          name: Package Images
+          command: |
+            mkdir ./build_out
+            docker save $(docker images -q) -o ./build_out/packaged_dev_images.tar
+            docker images | sed '1d' | awk '{print $1 " " $2 " " $3}' > ./build_out/dev_images.list
+# How to import images:
+# docker load -i /path/to/save/packaged_dev_images.tar
+# Then tag them by the same way it should be. To make docker-compose work
+# while read REPOSITORY TAG IMAGE_ID
+# do
+#        echo "== Tagging $REPOSITORY $TAG $IMAGE_ID =="
+#        docker tag "$IMAGE_ID" "$REPOSITORY:$TAG"
+# done < /path/to/save/dev_images.list
+      - store_artifacts:
+          path: ./build_out
 
   deploy_to_dev_server:
     machine: true
@@ -73,7 +73,7 @@ jobs:
               docker-compose run web python manage.py migrate
               echo ${csu_final} | docker-compose run web python manage.py shell
               docker-compose build
-              docker-compose --detach up
+              docker-compose up --detach
             "
 
 workflows:
