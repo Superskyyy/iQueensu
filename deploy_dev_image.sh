@@ -6,7 +6,6 @@ then
     docker stop \$(docker ps -a -q)
     docker rm \$(docker container ls -a | grep 'iqueensu_backend:latest_dev' | awk '{print \$1}')
     docker rmi \$(docker images | grep 'iqueensu_backend' | awk '{print \$3}')
-    docker rmi
     [ -d './iqueensu-dev-build' ] && rm -rf ./iqueensu-dev-build;
     tar -xzvf iQueensu.tar.gz;
     rm ./iQueensu.tar.gz;
