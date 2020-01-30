@@ -1,3 +1,7 @@
+Develop Build [![CircleCI](https://circleci.com/gh/Superskyyy/iQueensu/tree/dev-deploy.svg?style=svg&circle-token=84a2db9e6a8fdb65f43579a20d0667f7d31db266)](https://circleci.com/gh/Superskyyy/iQueensu/tree/dev-deploy)
+Master [![CircleCI](https://circleci.com/gh/Superskyyy/iQueensu/tree/master.svg?style=svg&circle-token=84a2db9e6a8fdb65f43579a20d0667f7d31db266)](https://circleci.com/gh/Superskyyy/iQueensu/tree/master)
+
+[![CodeFactor](https://www.codefactor.io/repository/github/superskyyy/iqueensu/badge?s=d89136c4e9d03ccf435d607cd6186a4e16265702)](https://www.codefactor.io/repository/github/superskyyy/iqueensu)
 # iQueensu
 * [Frontend](https://github.com/Superskyyy/iQueensu-frontend) Portal to iQueensu - frontend repo
 
