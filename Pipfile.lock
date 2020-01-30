@@ -380,11 +380,11 @@
         },
         "pre-commit": {
             "hashes": [
-                "sha256:4acd87f8e4eca44acc1cb8e929058a0e0498a134827ebecba2b1fbe4c799a9a0",
-                "sha256:692624cf100be745ea4776b15ecc5e22217f880e50629bc35865200eb041f76d"
+                "sha256:0385479a0fe0765b1d32241f6b5358668cb4b6496a09aaf9c79acc6530489dbb",
+                "sha256:bf80d9dd58bea4f45d5d71845456fdcb78c1027eda9ed562db6fa2bd7a680c3a"
             ],
             "index": "pypi",
-            "version": "==2.0.0"
+            "version": "==2.0.1"
         },
         "psycopg2-binary": {
             "hashes": [
@@ -433,9 +433,13 @@
         },
         "pycurl": {
             "hashes": [
-                "sha256:bdc308ff2a16ede41921cb0d88f51bd6cb5208c6478be9db579789e2e4db2528"
+                "sha256:1957c867e2a341f5526c107c7bbc5014d6e75fdc2a14294fcb8a47663fbd2e15",
+                "sha256:667db26516e50ce4a853745906f3b149c24756d85061b9d966eb7ec43a8c48a4",
+                "sha256:a6966e8d9ccda31c6d077c4f8673aaa88141cc73d50e110e93e627b816d17fd1",
+                "sha256:c5c379c8cc777dda397f86f0d0049480250ae84a82a9d99d668f461d368fb39c",
+                "sha256:ec7dd291545842295b7b56c12c90ffad2976cc7070c98d7b1517b7b6cd5994b3"
             ],
-            "version": "==7.43.0.4"
+            "version": "==7.43.0.5"
         },
         "pyjwt": {
             "hashes": [
