@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  db:
+    image: postgres
+  web:
+    build: .
+    image: iqueensu_backend:latest_dev
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/iqueensu_backend
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - chrome
+  chrome:
+    image: selenium/standalone-chrome:latest
+    ports:
+      - "4444:4444"
+    shm_size: 2g
