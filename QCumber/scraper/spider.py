@@ -42,7 +42,7 @@ try:
 except ModuleNotFoundError as error:
     print(
         """
-        Please copy QCumber/scraper/assets/settings_example.py as settings.py in the same folder, 
+        Please copy QCumber/scraper/assets/settings_example.py as settings.py in the same folder,
         and edit the settings as instructed in the file. 
         #Notice, settings.py is ignored by .gitignore file, everything in that file WILL BE LOST in CVS.
     """
@@ -155,13 +155,14 @@ class Spider:
                     time.strftime("%Y.%m.%d", time.localtime(time.time())) + "_test.png"
                 )
 
-            print("Login Successful")
-            self.logger.info("Logged in!")
             wait.until(
                 presence_of_element_located(
                     (By.ID, "DERIVED_SSS_BCC_SSS_EXPAND_ALL$97$")
                 )
             )
+            print("Login Successful")
+
+            self.logger.info("Logged in!")
             driver.find_element_by_id("DERIVED_SSS_BCC_SSS_EXPAND_ALL$97$").click()
 
             # first get a list of subject full names
