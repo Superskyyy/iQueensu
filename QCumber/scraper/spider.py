@@ -47,7 +47,7 @@ except ModuleNotFoundError as error:
         #Notice, settings.py is ignored by .gitignore file, everything in that file WILL BE LOST in CVS.
     """
     )
-    sys.exit(1)  # force to stop
+    # sys.exit(1)  # force to stop
 
     # make PyCharm feel happy even if there's no settings.py
     # Theoretically, Following line should be never executed.
