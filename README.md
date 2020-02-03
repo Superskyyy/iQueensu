@@ -33,6 +33,8 @@ Basic usage of Git-flow:
     
     This will automatically create a new branch called *feature/your-feature-name*, based on *dev* branch
 2. Finish a feature
+    Do not use `git flow feature finish` directly. After finish your coding, create pr manually 
+    on github. After your code is fully reviewed and marked as ready to merge, then run
     > `git flow feature finish "your-feature-name"`
     
     This will merge contents of *feature/your-feature-name* into *dev*, and delete *feature/your-feature-name*
