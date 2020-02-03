@@ -11,6 +11,40 @@ Master [![CircleCI](https://circleci.com/gh/Superskyyy/iQueensu/tree/master.svg?
 - Request review from a peer dev.
 - Follow PEP 8 coding style, follow Pylint.
 - Always run a test after you modify anything.
+- Follow the instructions of git-flow
+
+### Git-flow
+Git-flow is a tool for automatic branch management, deal with dirty commit histories.
+Following are default settings for this repository:
+- Production branch: master
+- "Next Production" branch: dev
+- Feature: feature/
+- Bugfix: bugfix/
+- Release: release/
+- Hotfix: hotfix/
+- Support: support/
+
+Notice: NEVER EVER modify ***master*** ***dev*** ***dev-deploy*** ***release*** directly!
+Notice: Always squash verbose commits to a single one tight and neat commit before merge into main flows.
+
+Basic usage of Git-flow:
+1. Start with a new feature
+    > `git flow feature start "your-feature-name"`
+    
+    This will automatically create a new branch called *feature/your-feature-name*, based on *dev* branch
+2. Finish a feature
+    > `git flow feature finish "your-feature-name"`
+    
+    This will merge contents of *feature/your-feature-name* into *dev*, and delete *feature/your-feature-name*
+3. Initialize with git-flow
+    > `git flow init`
+    
+    And then follow by instructions
+    
+### Deploy and test
+When you pull request or merge into *dev-deploy*, the contents will be automatically tested
+and send to dev test server if no error occur during ci build and test stage.
+
 ### PyLint
 - Pycharm - Preference - Plugin - Marketplace 
 
