@@ -27,6 +27,7 @@ class CourseDetailAdmin(admin.ModelAdmin):
         "academic_group",
         "academic_organization",
         "enrollment",
+        "learning_hours",
         "description",
     )
     list_filter = ("units", "career", "campus")

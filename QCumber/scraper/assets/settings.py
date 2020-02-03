@@ -7,7 +7,7 @@ import sys
 
 SCRAPER_USER_NAME, SCRAPER_USER_PASSWD = "", ""
 try:
-    with open("spider_credentials.json") as credentials_file:
+    with open("QCumber/scraper/assets/spider_credentials.json") as credentials_file:
         credentials = json.load(credentials_file)
         SCRAPER_USER_NAME = credentials["username"]
         SCRAPER_USER_PASSWD = credentials["password"]
