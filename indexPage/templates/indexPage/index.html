@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>iQueensU</title>
+</head>
+<body>
+{% if dev.test %}
+<h1>Home</h1>
+
+
+<div id="mount_node"></div>
+
+
+<script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+
+<style>
+    .q-post{
+        border: 2px dotted #000;
+        width:800px;
+    }
+    .q-post-date{
+        font-size: 0.8em;
+    }
+    .q-post-author{
+        font-family: "Arial", "Verdana", "Times New Roman", Times, serif;
+    }
+    .q-post-text{
+        font-family: "Arial", "Verdana", "Times New Roman", Times, serif;
+        font-size:1.5em;
+    }
+
+</style>
+
+<script type="text/babel">
+
+    class QPost extends React.Component {
+      render() {
+        return (
+        <div className="q-post">
+
+            <h3>Title: {this.props.title}</h3>
+            <div className="q-post-date"><p>{this.props.date}</p></div>
+            <div className="q-post-author"><p>By {this.props.author}</p></div>
+            <div className="q-post-text">
+                {this.props.text}
+            </div>
+            <hr/>
+        </div>
+        );
+      }
+    }
+    class QPostList extends React.Component{
+        constructor(){
+            super();
+            this.state ={
+                posts: [],
+            }
+        }
+        componentDidMount(){
+            fetch('/{{ dev.api }}/posts/').then(results => {
+                return results.json();
+            }).then(data => {
+                var i = 0;
+                let posts = data.results.map((data) => {
+                    return(
+                        <QPost
+                            key={i++}
+                            title={data.post_title}
+                            date={data.post_date}
+                            author={data.post_author}
+                            text={data.post_text} />
+                    )
+                });
+                this.setState({posts: posts});
+            })
+        }
+        render(){
+            return <div>{this.state.posts}</div>
+        }
+    }
+
+    var element = <QPostList/>;
+    ReactDOM.render(
+      element,
+      document.getElementById('mount_node')
+    );
+
+</script>
+{% endif %}
+</body>
+</html>
