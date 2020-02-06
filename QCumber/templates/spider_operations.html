@@ -1,0 +1,67 @@
+{% extends 'admin/change_list.html' %}
+
+{% block object-tools %}
+
+    <div>
+        <h2>
+            Following Section sets up the SOLUS Scraper credentials
+        </h2>
+        <form id="spider-credentials-form" method="post">
+            {% csrf_token %}
+            <label>Username:
+                <input name="spider-username" class="vTextField">
+            </label>
+            <br>
+            <label>Password:
+                <input name="spider-password" class="vTextField">
+            </label>
+            <br><br>
+
+            <button class="button" onclick="setCredential();" id="credential-submit" type="submit"> Deploy Credentials!
+            </button>
+            <br><br>
+
+            <hr>
+            <br>
+        </form>
+
+        <script>
+            //window.alert("Please set credential before running");
+
+            function setCredential() {
+
+                let spiderCredentialsForm = document.querySelector('#spider-credentials-form');
+                let spiderUsername = spiderCredentialsForm.querySelector('input[name="spider-username"]').value;
+                let spiderPassword = spiderCredentialsForm.querySelector('input[name="spider-password"]').value;
+                let spiderCredentials = spiderUsername + ";;;" + spiderPassword;
+                //console.log(spiderCredentials);
+                spiderCredentialsForm.action = 'spider-credentials/' + spiderCredentials + '/';
+
+            }
+
+
+            //window.alert("11233");
+            /*
+                        let spiderCredentialsForm = document.querySelector('#spider-credentials-form');
+                        window.alert("11233");
+
+                        spiderCredentialsForm.querySelector('input[name="spider-username"]').addEventListener('change',
+                            function (e) {
+                                let username = e.target.value;
+                                window.alert(username);
+                                spiderCredentialsForm.action = 'spider-credentials/' + username + '/';
+                            })*/
+        </script>
+
+        <form action="solus-course-scraper-start/" method="POST">
+            {% csrf_token %}
+            <button type="submit">Start Scraper</button>
+        </form>
+        <form action="solus-course-scraper-terminate/" method="POST">
+            {% csrf_token %}
+            <button type="submit">Stop Scraper(Deprecated)</button>
+        </form>
+    </div>
+    <br/>
+    {{ block.super }}
+{% endblock %}

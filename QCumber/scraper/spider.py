@@ -6,6 +6,7 @@ import logging
 import os
 import queue
 import random
+import re
 import sys
 import time
 from logging.handlers import QueueHandler
@@ -29,6 +30,7 @@ from QCumber.scraper.assets.models import (
     CourseDescription,
     EnrollmentInformation,
     GradingPossibleValues,
+    LearningHours,
     SubjectPossibleValues,
 )
 
@@ -42,7 +44,7 @@ try:
 except ModuleNotFoundError as error:
     print(
         """
-        Please copy QCumber/scraper/assets/settings_example.py as settings.py in the same folder, 
+        Please copy QCumber/scraper/assets/settings_example.py as settings.py in the same folder,
         and edit the settings as instructed in the file. 
         #Notice, settings.py is ignored by .gitignore file, everything in that file WILL BE LOST in CVS.
     """
@@ -143,25 +145,31 @@ class Spider:
                 "c/SA_LEARNER_SERVICES.SSS_BROWSE_CATLG_P.GBL"
             )
 
-            wait = WebDriverWait(driver, 10)
+            wait = WebDriverWait(driver, 15)
             wait.until(presence_of_element_located((By.ID, "username")))
+            print("WTF??????")
+            print(SCRAPER_USER_NAME, SCRAPER_USER_PASSWD)
 
             driver.find_element_by_id("username").send_keys(SCRAPER_USER_NAME)
             driver.find_element_by_id("password").send_keys(SCRAPER_USER_PASSWD)
             driver.find_element_by_name("_eventId_proceed").click()
 
+            """
             if SCRAPER_DEBUG:
                 driver.get_screenshot_as_file(
                     time.strftime("%Y.%m.%d", time.localtime(time.time())) + "_test.png"
                 )
-
-            print("Login Successful")
-            self.logger.info("Logged in!")
+            
+            """
+            time.sleep(5)
             wait.until(
                 presence_of_element_located(
                     (By.ID, "DERIVED_SSS_BCC_SSS_EXPAND_ALL$97$")
                 )
             )
+            print("Login Successful")
+
+            self.logger.info("Logged in!")
             driver.find_element_by_id("DERIVED_SSS_BCC_SSS_EXPAND_ALL$97$").click()
 
             # first get a list of subject full names
@@ -224,6 +232,10 @@ class Spider:
                 item.click()
 
                 # data prepare
+
+                # FIXME SPIDER DIED at this line, investigation needed. after web_1
+                # 'course_title': 'Theatre Administration', 'course_number': '820'}
+                #  | QCumber_Scraper - 2020-02-02 17:45:24,481: course#: 101 course title: Astronomy I: Solar System
                 wait_quick.until(
                     presence_of_element_located(
                         (By.ID, "SSR_CRSE_OFF_VW_ACAD_CAREER$0")
@@ -236,38 +248,89 @@ class Spider:
                 for names in subject_full_names:
                     if detail_dict["subject_code"] in names:
                         detail_dict["subject_name"] = names[7:]
+                try:
+                    detail_dict["career"] = driver.find_element_by_id(
+                        "SSR_CRSE_OFF_VW_ACAD_CAREER$0"
+                    ).text
+                except exceptions.NoSuchElementException:
+                    detail_dict["career"] = "Not Specified"
 
-                detail_dict["career"] = driver.find_element_by_id(
-                    "SSR_CRSE_OFF_VW_ACAD_CAREER$0"
-                ).text
-                detail_dict["units"] = driver.find_element_by_id(
-                    "DERIVED_CRSECAT_UNITS_RANGE$0"
-                ).text
-                detail_dict["grading"] = driver.find_element_by_id(
-                    "SSR_CRSE_OFF_VW_GRADING_BASIS$0"
-                ).text
-                detail_dict["components_description"] = driver.find_element_by_id(
-                    "DERIVED_CRSECAT_DESCR$0"
-                ).text
-                detail_dict["campus"] = driver.find_element_by_id(
-                    "CAMPUS_TBL_DESCR$0"
-                ).text
-                detail_dict["academic_group"] = driver.find_element_by_id(
-                    "ACAD_GROUP_TBL_DESCR$0"
-                ).text
-                detail_dict["academic_org"] = driver.find_element_by_id(
-                    "ACAD_ORG_TBL_DESCR$0"
-                ).text
-                detail_dict["enroll_add_consent"] = driver.find_element_by_id(
-                    "SSR_CRSE_OFF_VW_CONSENT$0"
-                ).text
-                detail_dict["enroll_drop_consent"] = driver.find_element_by_id(
-                    "SSR_CRSE_OFF_VW_SSR_DROP_CONSENT$0"
-                ).text
+                try:
+                    detail_dict["units"] = driver.find_element_by_id(
+                        "DERIVED_CRSECAT_UNITS_RANGE$0"
+                    ).text
+                except exceptions.NoSuchElementException:
+                    detail_dict["units"] = "Not Specified"
+
+                try:
+                    detail_dict["grading"] = driver.find_element_by_id(
+                        "SSR_CRSE_OFF_VW_GRADING_BASIS$0"
+                    ).text
+                except exceptions.NoSuchElementException:
+                    detail_dict["grading"] = "Not Specified"
+
+                try:
+                    detail_dict["components_description"] = driver.find_element_by_id(
+                        "DERIVED_CRSECAT_DESCR$0"
+                    ).text
+                except exceptions.NoSuchElementException:
+                    detail_dict["components_description"] = "Not Specified"
+
+                try:
+                    detail_dict["campus"] = driver.find_element_by_id(
+                        "CAMPUS_TBL_DESCR$0"
+                    ).text
+                except exceptions.NoSuchElementException:
+                    detail_dict["campus"] = "Not Specified"
+
+                try:
+                    detail_dict["academic_group"] = driver.find_element_by_id(
+                        "ACAD_GROUP_TBL_DESCR$0"
+                    ).text
+                except exceptions.NoSuchElementException:
+                    detail_dict["academic_group"] = "Not Specified"
+
+                try:
+                    detail_dict["academic_org"] = driver.find_element_by_id(
+                        "ACAD_ORG_TBL_DESCR$0"
+                    ).text
+                except exceptions.NoSuchElementException:
+                    detail_dict["academic_org"] = "Not Specified"
+
+                try:
+                    detail_dict["enroll_add_consent"] = driver.find_element_by_id(
+                        "SSR_CRSE_OFF_VW_CONSENT$0"
+                    ).text
+                except exceptions.NoSuchElementException:
+                    detail_dict["enroll_add_consent"] = "Not Specified"
+
+                try:
+                    detail_dict["enroll_drop_consent"] = driver.find_element_by_id(
+                        "SSR_CRSE_OFF_VW_SSR_DROP_CONSENT$0"
+                    ).text
+                except exceptions.NoSuchElementException:
+                    detail_dict["enroll_drop_consent"] = "Not Specified"
+
                 # FIXME add enrollment prerequisites
-                detail_dict["course_description"] = driver.find_element_by_id(
-                    "SSR_CRSE_OFF_VW_DESCRLONG$0"
-                ).text
+                try:
+                    # Find learning hours among course descriptions:
+                    description_raw = driver.find_element_by_id(
+                        "SSR_CRSE_OFF_VW_DESCRLONG$0"
+                    ).text
+                except exceptions.NoSuchElementException:
+                    description_raw = "Not Specified"
+                learning_hours_regex = re.compile(
+                    r"LEARNING HOURS(\s*)([0-9]*)(\s*)\((.*)\)"
+                )
+                learning_hours_regex_queried = re.search(
+                    learning_hours_regex, description_raw
+                )
+                detail_dict["learning_hours"] = (
+                    "Not Specified"
+                    if learning_hours_regex_queried is None
+                    else learning_hours_regex_queried.group()
+                )
+                detail_dict["course_description"] = description_raw
                 detail_dict["course_title"] = course_title
                 detail_dict["course_number"] = course_nbr
 
@@ -302,6 +365,7 @@ class Spider:
                        "academic_org": "REH (not department specific)",
                        "enroll_add_consent": "Department Consent Required",
                        "enroll_drop_consent":"Department Consent Required",
+                       "learning_hours": "azzzzz"
                        "course_description": "This course simply blows you mind",
                        "course_title": "Fundamental Computing Theory",
                        "course_number": "998",
@@ -338,6 +402,9 @@ class Spider:
                 enrollment=EnrollmentInformation.objects.get_or_create(
                     enroll_add_consent=detail_dict["enroll_add_consent"],
                     enroll_drop_consent=detail_dict["enroll_drop_consent"],
+                )[0],
+                learning_hours=LearningHours.objects.get_or_create(
+                    learning_hours=detail_dict["learning_hours"]
                 )[0],
                 description=CourseDescription.objects.get_or_create(
                     description=detail_dict["course_description"]
