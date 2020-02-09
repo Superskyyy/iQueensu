@@ -26,6 +26,7 @@ googlemaps = "*"
 pylint = "*"
 pipfile = "*"
 pre-commit = ">=2.0.0"
+django-filter = "*"
 
 [dev-packages]
 
