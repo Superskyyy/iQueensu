@@ -23,9 +23,8 @@ from django.views.generic import RedirectView
 # from rest_framework_jwt_sso import views
 #    path('',views.hw),
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('indexPage/', include('indexPage.urls')),
-    path('qcumber/', include('QCumber.api.urls')),
+    path("admin/", admin.site.urls),
+    path("qcumber/", include("QCumber.api.urls")),
 ]
 #    path('qapi_v0/', include('QAPI.urls')),
 #    path('qauth_v0/', include('QAuth.urls')),
@@ -33,15 +32,11 @@ urlpatterns = [
 # Qcumber api
 
 
-urlpatterns += [
-    path('', include("QCumber.api.urls"))
-]
+urlpatterns += [path("", include("QCumber.api.urls"))]
 
 # Add URL maps to redirect the base URL to our application
 
-urlpatterns += [
-    path('', RedirectView.as_view(url='/admin')),
-]
+urlpatterns += [path("", RedirectView.as_view(url="/admin"))]
 # indexPage/bbs
 
 
