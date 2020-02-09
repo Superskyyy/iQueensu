@@ -12,7 +12,6 @@ class CourseDetailViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows courses to be viewed or edited.
     """
-
     queryset = CourseDetail.objects.all()
     serializer_class = CourseDetailSerializer
     filter_backends = [filters.SearchFilter]
