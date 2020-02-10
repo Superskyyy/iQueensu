@@ -19,6 +19,10 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
 from django.views.generic import RedirectView
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
 
 # from rest_framework_jwt_sso import views
 #    path('',views.hw),
@@ -28,7 +32,10 @@ urlpatterns = [
 ]
 #    path('qapi_v0/', include('QAPI.urls')),
 #    path('qauth_v0/', include('QAuth.urls')),
-
+urlpatterns += [
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+]
 # Qcumber api
 
 

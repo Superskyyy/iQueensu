@@ -49,7 +49,6 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
-    "django_filters",
 ]
 """
 
@@ -62,6 +61,7 @@ INSTALLED_APPS += [
     'allauth.account',
     'rest_auth.registration',
     'QUser',
+    "django_filters",
 ]
 """
 
@@ -171,14 +171,17 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static")
 # STATICFILES_DIRS = [
 #           os.path.join(BASE_DIR, "static"),
 #          ]
-"""
+
 # RestAPI configurations
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend'),
-    'PAGE_SIZE': 10
+    'PAGE_SIZE': 10,
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
 }
-"""
+
 
 REST_API_ADDRESS = "qapi_v0"
 
