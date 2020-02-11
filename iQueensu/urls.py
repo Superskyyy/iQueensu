@@ -29,6 +29,7 @@ from rest_framework_simplejwt.views import (
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("qcumber/", include("QCumber.api.urls")),
+    path("quser/", include("QUser.api.urls")),
 ]
 #    path('qapi_v0/', include('QAPI.urls')),
 #    path('qauth_v0/', include('QAuth.urls')),

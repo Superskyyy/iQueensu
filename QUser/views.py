@@ -1,11 +1,10 @@
 # ListCreateAPI view
 
-from rest_framework import generics
+from rest_framework import viewsets
+from django.contrib.auth.models import AbstractUser
+from QUser.serializers import QUserSerializer
 
-from . import models
-from . import serializers
 
-
-class QUserListView(generics.ListCreateAPIView):
-    queryset = models.CustomUser.objects.all()
-    serializer_class = serializers.QUserSerializer
+class QUserListView(viewsets.ModelViewSet):
+    queryset = AbstractUser.CustomUser.objects.all()
+    serializer_class = QUserSerializer.QUserSerializer
