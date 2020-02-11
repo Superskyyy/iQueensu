@@ -11,6 +11,9 @@
 .idea/**/Project.xml
 .idea/
 .idea
+.vscode/settings.json
+.vscode/
+.vscode
 
 /QCumber_Scraper/settings/Settings.py
 /QCumber/scraper/QCumber_Scraper_Config.json
