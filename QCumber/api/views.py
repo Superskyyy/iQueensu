@@ -2,12 +2,17 @@
 QCumber views here.
 """
 from django.contrib.postgres.search import SearchQuery, SearchRank, SearchVector
-from django.db.models import Q
+from django.db.models import Q, Value
+from django.db.models.functions import Concat
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
 from rest_framework import viewsets
 
-from QCumber.api.serializers import CourseSerializer, CourseDetailSerializer
+from QCumber.api.serializers import (
+    CourseSerializer,
+    CourseDetailSerializer,
+    CourseSimpleSerializer,
+)
 from QCumber.scraper.assets.models import Course, CourseDetail
 
 
@@ -52,7 +57,17 @@ class CourseViewSet(viewsets.ModelViewSet):
     """
 
     queryset = Course.objects.all()
-    serializer_class = CourseSerializer
+
+    def get_serializer_class(self):
+        if self.action == "list":
+            print("list triggered")
+
+            return CourseSimpleSerializer
+        if self.action == "retrieve":
+            print("retrieve triggered")
+            return CourseSerializer
+        return CourseSerializer
+
     filter_backends = [DjangoFilterBackend]
     filterset_fields = [
         "number",
@@ -83,7 +98,7 @@ class CourseViewSet(viewsets.ModelViewSet):
         courses = Course.objects.all()
         search_term = self.request.query_params.get("search", None)
         if search_term is not None:
-            print(search_term)
+            print(f"Search term: {search_term}")
 
             search_query = SearchQuery(search_term)
             search_vectors = (
@@ -94,7 +109,7 @@ class CourseViewSet(viewsets.ModelViewSet):
             )
             )
 
-            search_result_courses = (
+            general_result = (
                 Course.objects.annotate(
                     search=search_vectors, rank=SearchRank(search_vectors, search_query)
                 )
@@ -125,7 +140,11 @@ class CourseViewSet(viewsets.ModelViewSet):
                 )
                     .order_by("-rank")
             )  # FIXME： 这个排序会导致searchvector结果永远高于trigram 不确定是否有益
+            course_name_id_search_result = Course.objects.annotate(
+                course_name_id=Concat("subject__code", Value(" "), "number")
+            ).filter(course_name_id__search=search_term)
+            # print(course_name_id_search_result)
+            search_result_courses = general_result | course_name_id_search_result
 
-            # print(search_result_courses)
             return search_result_courses
         return courses

@@ -2,6 +2,8 @@
 This is the models for QCumber courses,
 Only Course and CourseDetails are serialized.
 """
+import uuid
+
 from django.db import models
 
 
@@ -205,6 +207,11 @@ class Course(models.Model):
     All Courses including following fields
     """
 
+    # uuid is used for external access hack prevention
+    # Good for postgreSQL as it supports UUID Field
+    uuid = models.UUIDField(
+        primary_key=True, default=uuid.uuid4, editable=False, unique=True
+    )
     # Multiple courses can share the same subject.
     subject = models.ForeignKey(SubjectPossibleValues, on_delete=models.CASCADE)
     number = models.CharField(max_length=128)
