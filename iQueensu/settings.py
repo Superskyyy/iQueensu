@@ -31,7 +31,7 @@ DEBUG = True
 # Turn LOCAL_DEBUG on if you want to debug frontend using npm start
 
 my_os = platform.system()
-LOCAL_DEBUG = False
+LOCAL_DEBUG = True
 if my_os != "Linux":
     LOCAL_DEBUG = True
 
@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "django_filters",
+    "corsheaders",
 ]
 """
 
@@ -76,6 +77,8 @@ SITE_ID = 1
 # register our apps here ^^
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -84,12 +87,14 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
-
+"""
 if LOCAL_DEBUG:
-    MIDDLEWARE += [
+    MIDDLEWARE = [
         "corsheaders.middleware.CorsMiddleware",
         "django.middleware.common.CommonMiddleware",
     ]
+
+"""
 
 ROOT_URLCONF = "iQueensu.urls"
 
@@ -182,8 +187,5 @@ REST_FRAMEWORK = {
 
 REST_API_ADDRESS = "qapi_v0"
 
-if LOCAL_DEBUG:
-    CORS_ORIGIN_ALLOW_ALL = True
-    CORS_ALLOW_CREDENTIALS = True
-    CORS_ORIGIN_WHITELIST = ("localhost:3000",)
-    CORS_ORIGIN_REGEX_WHITELIST = ("localhost:3000",)
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
