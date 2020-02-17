@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "django_filters",
+    "corsheaders",
 ]
 """
 
@@ -76,6 +77,8 @@ SITE_ID = 1
 # register our apps here ^^
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -85,11 +88,6 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-if LOCAL_DEBUG:
-    MIDDLEWARE += [
-        "corsheaders.middleware.CorsMiddleware",
-        "django.middleware.common.CommonMiddleware",
-    ]
 
 ROOT_URLCONF = "iQueensu.urls"
 
@@ -182,8 +180,5 @@ REST_FRAMEWORK = {
 
 REST_API_ADDRESS = "qapi_v0"
 
-if LOCAL_DEBUG:
-    CORS_ORIGIN_ALLOW_ALL = True
-    CORS_ALLOW_CREDENTIALS = True
-    CORS_ORIGIN_WHITELIST = ("localhost:3000",)
-    CORS_ORIGIN_REGEX_WHITELIST = ("localhost:3000",)
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True

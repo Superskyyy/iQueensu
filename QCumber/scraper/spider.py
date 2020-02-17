@@ -45,7 +45,7 @@ except ModuleNotFoundError as error:
     print(
         """
         Please copy QCumber/scraper/assets/settings_example.py as settings.py in the same folder,
-        and edit the settings as instructed in the file. 
+        and edit the settings as instructed in the file.
         #Notice, settings.py is ignored by .gitignore file, everything in that file WILL BE LOST in CVS.
     """
     )
@@ -147,20 +147,11 @@ class Spider:
 
             wait = WebDriverWait(driver, 15)
             wait.until(presence_of_element_located((By.ID, "username")))
-            print("WTF??????")
-            print(SCRAPER_USER_NAME, SCRAPER_USER_PASSWD)
 
             driver.find_element_by_id("username").send_keys(SCRAPER_USER_NAME)
             driver.find_element_by_id("password").send_keys(SCRAPER_USER_PASSWD)
             driver.find_element_by_name("_eventId_proceed").click()
 
-            """
-            if SCRAPER_DEBUG:
-                driver.get_screenshot_as_file(
-                    time.strftime("%Y.%m.%d", time.localtime(time.time())) + "_test.png"
-                )
-            
-            """
             time.sleep(5)
             wait.until(
                 presence_of_element_located(
@@ -326,9 +317,11 @@ class Spider:
                     learning_hours_regex, description_raw
                 )
                 detail_dict["learning_hours"] = (
-                    "Not Specified"
+                    "-1"
                     if learning_hours_regex_queried is None
-                    else learning_hours_regex_queried.group()
+                    else learning_hours_regex_queried.group().replace(
+                        "LEARNING HOURS ", ""
+                    )
                 )
                 detail_dict["course_description"] = description_raw
                 detail_dict["course_title"] = course_title
