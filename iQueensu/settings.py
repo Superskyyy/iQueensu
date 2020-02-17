@@ -123,6 +123,7 @@ if DOCKER:
             "ENGINE": "django.db.backends.postgresql",
             "NAME": "postgres",
             "USER": "postgres",
+            "PASSWORD": "iqueensu",
             "HOST": "db",
             "PORT": 5432,
         }

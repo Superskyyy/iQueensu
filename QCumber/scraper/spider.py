@@ -141,8 +141,7 @@ class Spider:
             desired_capabilities=DesiredCapabilities.CHROME,
         ) as driver:
             driver.get(
-                "https://saself.ps.queensu.ca/psc/saself/EMPLOYEE/HRMS/"
-                "c/SA_LEARNER_SERVICES.SSS_BROWSE_CATLG_P.GBL"
+                "https://saself.ps.queensu.ca/psc/saself/EMPLOYEE/HRMS/c/SA_LEARNER_SERVICES.SSS_BROWSE_CATLG_P.GBL"
             )
 
             wait = WebDriverWait(driver, 15)
