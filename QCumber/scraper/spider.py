@@ -136,9 +136,9 @@ class Spider:
         time.sleep(3)
 
         with webdriver.Remote(
-            options=self.option,
-            command_executor="http://chrome:4444/wd/hub",
-            desired_capabilities=DesiredCapabilities.CHROME,
+                options=self.option,
+                command_executor="http://chrome:4444/wd/hub",
+                desired_capabilities=DesiredCapabilities.CHROME,
         ) as driver:
             driver.get(
                 "https://saself.ps.queensu.ca/psc/saself/EMPLOYEE/HRMS/c/SA_LEARNER_SERVICES.SSS_BROWSE_CATLG_P.GBL"
@@ -315,14 +315,17 @@ class Spider:
                 learning_hours_regex_queried = re.search(
                     learning_hours_regex, description_raw
                 )
-                detail_dict["learning_hours"] = (
-                    "-1"
-                    if learning_hours_regex_queried is None
-                    else learning_hours_regex_queried.group().replace(
+
+                if not learning_hours_regex_queried:
+                    detail_dict["learning_hours"] = "-1"
+
+                    detail_dict["course_description"] = description_raw
+                else:
+                    learning_hours_regex_queried.group().replace(
                         "LEARNING HOURS ", ""
                     )
-                )
-                detail_dict["course_description"] = description_raw
+                    detail_dict["course_description"] = description_raw.replace(learning_hours_regex_queried.group(),
+                                                                                "")
                 detail_dict["course_title"] = course_title
                 detail_dict["course_number"] = course_nbr
 

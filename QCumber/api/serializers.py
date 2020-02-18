@@ -30,8 +30,8 @@ class CourseDetailSerializer(serializers.HyperlinkedModelSerializer):
         model = CourseDetail
 
         fields = (
-            "url",
-            "id",
+            # "url",
+            # "id",
             "units",
             "career",
             "grading",
@@ -108,7 +108,7 @@ class CourseSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Course
         fields = (
-            "url",
+            #"url",
             "uuid",
             "number",
             "subject_name",
@@ -129,8 +129,8 @@ class CourseSimpleSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Course
         fields = (
-            "url",
-            # "uuid",
+            # "url",
+            "uuid",
             "number",
             "subject_name",
             "subject_code",
