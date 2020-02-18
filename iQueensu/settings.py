@@ -52,6 +52,10 @@ INSTALLED_APPS = [
     "django_filters",
     "corsheaders",
 ]
+
+INSTALLED_APPS += [
+    'djoser'
+]
 """
 
 # apps for auth purposes
@@ -178,6 +182,16 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 10
 }
 """
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
+
+SIMPLE_JWT = {
+   'AUTH_HEADER_TYPES': ('JWT',),
+}
 
 REST_API_ADDRESS = "qapi_v0"
 

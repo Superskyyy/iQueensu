@@ -14,7 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.conf import settings
-from django.conf.urls import include
+from django.conf.urls import include, url
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
@@ -30,8 +30,6 @@ urlpatterns = [
 #    path('qauth_v0/', include('QAuth.urls')),
 
 # Qcumber api
-
-
 urlpatterns += [path("", include("QCumber.api.urls"))]
 
 # Add URL maps to redirect the base URL to our application
@@ -39,7 +37,11 @@ urlpatterns += [path("", include("QCumber.api.urls"))]
 urlpatterns += [path("", RedirectView.as_view(url="/admin"))]
 # indexPage/bbs
 
+#djoser auth
+urlpatterns += [
+    url(r'^auth/', include('djoser.urls')),
+    url(r'^auth/', include('djoser.urls.jwt'))
+]
 
 # Use static() to add url mapping to serve static files during development (only)
-
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
