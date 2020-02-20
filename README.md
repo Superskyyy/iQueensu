@@ -75,7 +75,7 @@ Fill in corresponding Queen's SSO credentials. This step is crucial to the prope
         
         [Windows Git Bash]> winpty docker-compose run web python manage.py createsuperuser
         
-        [Unix]> docker-compose run web python manage.py createsuperuser
+        [Unix & Powershell]> docker-compose run web python manage.py createsuperuser
         
         docker-compose build
         
