@@ -307,7 +307,7 @@ class CourseRating(models.Model):
     CourseReview <- foreign key -> Course
     Each course can have only one star rating
     One on one relation
-
+q
     E.g.
     "course_review": "This Queen's Course is just perfect",
     """
