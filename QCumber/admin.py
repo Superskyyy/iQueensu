@@ -8,7 +8,7 @@ from django.contrib import admin
 from django.http import HttpResponseRedirect
 from django.urls import path, re_path
 
-from QCumber.scraper.assets.models import CourseDetail, Course
+from QCumber.scraper.assets.models import CourseDetail, Course, CourseRating
 from QCumber.scraper.spider import Spider
 
 
@@ -33,15 +33,30 @@ class CourseDetailAdmin(admin.ModelAdmin):
     list_filter = ("units", "career", "campus")
 
 
+class CourseRatingInline(admin.TabularInline):
+    model = CourseRating
+
+
+@admin.register(CourseRating)
+class CourseRatingAdmin(admin.ModelAdmin):
+    list_display = ("course_review", "star_ratings")
+
+
 @admin.register(Course)
 class CourseAdmin(admin.ModelAdmin):
     """
     The Admin page for Courses
     """
 
-    list_display = ("subject", "number", "name", "details")
+    list_display = ("subject", "number", "name", "get_career", "details")
     list_filter = ("number",)
     change_list_template = "spider_operations.html"
+    inlines = [  # This allows us to edit the following in course admin
+        CourseRatingInline
+    ]
+
+    def get_career(self, obj):
+        return obj.details.career.career
 
     def get_urls(self):
         urls = super().get_urls()

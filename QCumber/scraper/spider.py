@@ -45,7 +45,7 @@ except ModuleNotFoundError as error:
     print(
         """
         Please copy QCumber/scraper/assets/settings_example.py as settings.py in the same folder,
-        and edit the settings as instructed in the file.
+        and edit the settings as instructed in the file. 
         #Notice, settings.py is ignored by .gitignore file, everything in that file WILL BE LOST in CVS.
     """
     )
@@ -140,9 +140,9 @@ class Spider:
                 command_executor="http://chrome:4444/wd/hub",
                 desired_capabilities=DesiredCapabilities.CHROME,
         ) as driver:
-            driver.get(
-                "https://saself.ps.queensu.ca/psc/saself/EMPLOYEE/HRMS/c/SA_LEARNER_SERVICES.SSS_BROWSE_CATLG_P.GBL"
-            )
+            url1 = "https://saself.ps.queensu.ca/psc/saself/EMPLOYEE/HRMS/"
+            url2 = "c/SA_LEARNER_SERVICES.SSS_BROWSE_CATLG_P.GBL"
+            driver.get(url1 + url2)
 
             wait = WebDriverWait(driver, 15)
             wait.until(presence_of_element_located((By.ID, "username")))
@@ -321,11 +321,10 @@ class Spider:
 
                     detail_dict["course_description"] = description_raw
                 else:
-                    learning_hours_regex_queried.group().replace(
-                        "LEARNING HOURS ", ""
+                    learning_hours_regex_queried.group().replace("LEARNING HOURS ", "")
+                    detail_dict["course_description"] = description_raw.replace(
+                        learning_hours_regex_queried.group(), ""
                     )
-                    detail_dict["course_description"] = description_raw.replace(learning_hours_regex_queried.group(),
-                                                                                "")
                 detail_dict["course_title"] = course_title
                 detail_dict["course_number"] = course_nbr
 

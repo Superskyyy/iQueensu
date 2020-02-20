@@ -11,9 +11,10 @@ from rest_framework import viewsets
 from QCumber.api.serializers import (
     CourseSerializer,
     CourseDetailSerializer,
-    CourseSimpleSerializer,
+    CourseRatingSerializer,
 )
-from QCumber.scraper.assets.models import Course, CourseDetail
+from QCumber.api.serializers import CourseSimpleSerializer
+from QCumber.scraper.assets.models import Course, CourseDetail, CourseRating
 
 
 # https://django-filter.readthedocs.io/en/latest/guide/rest_framework.html
@@ -42,6 +43,19 @@ class CourseDetailViewSet(viewsets.ModelViewSet):
         "course_description",
         "details__learning_hours__learning_hours",
     ]
+
+
+class CourseRatingViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows coursesDetails to be viewed or edited.
+    This viewset should never be queried in production
+    as it uses an unoptimized search filter.
+    """
+
+    queryset = CourseRating.objects.all()
+    serializer_class = CourseRatingSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = []
 
 
 # https://www.django-rest-framework.org/api-guide/filtering/#searchfilter
@@ -120,8 +134,8 @@ class CourseViewSet(viewsets.ModelViewSet):
                         number=search_term
                     )
                             | Q(subject__name__trigram_similar=search_term)
-                            | Q(subject__code=search_term)
-                            | Q(details__units__contains=search_term)
+                            | Q(subject__code__trigram_similar=search_term)
+                            | Q(details__units__istartswith=search_term)
                             | Q(details__career__career__trigram_similar=search_term)
                             | Q(
                         details__grading_basis__grading__trigram_similar=search_term

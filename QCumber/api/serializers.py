@@ -5,7 +5,7 @@ from django.utils.text import Truncator
 from rest_framework import serializers
 
 # get all models class
-from QCumber.scraper.assets.models import CourseDetail, Course
+from QCumber.scraper.assets.models import CourseDetail, Course, CourseRating
 
 
 class CourseDetailSerializer(serializers.HyperlinkedModelSerializer):
@@ -43,6 +43,27 @@ class CourseDetailSerializer(serializers.HyperlinkedModelSerializer):
             "enroll_drop_consent",
             "learning_hours",
             "course_description",
+        )
+
+
+class CourseRatingSerializer(serializers.HyperlinkedModelSerializer):
+    """
+
+    Serializer for CourseRatings, simply grabs all the objects
+    This is not used in API
+    """
+
+    course_review = serializers.CharField()
+    star_ratings = serializers.CharField()
+
+    class Meta:
+        model = CourseRating
+        fields = (
+            "url",
+            "id",
+            "course_review",
+            "star_ratings",
+            # "course",
         )
 
 
@@ -104,16 +125,18 @@ class CourseSerializer(serializers.HyperlinkedModelSerializer):
     subject_name = serializers.CharField(source="subject.name")
     subject_code = serializers.CharField(source="subject.code")
     course_details = CourseDetailSerializer(source="details")
+    courserating_set = CourseRatingSerializer(many=True)
 
     class Meta:
         model = Course
         fields = (
-            #"url",
+            # "url",
             "uuid",
             "number",
             "subject_name",
             "subject_code",
             "course_details",
+            "courserating_set",
         )
 
 

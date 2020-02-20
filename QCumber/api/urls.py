@@ -10,6 +10,8 @@ from QCumber.api import views
 router = routers.DefaultRouter()
 router.register(r"courses", views.CourseViewSet)
 router.register(r"courseDetails", views.CourseDetailViewSet)
+router.register(r"courseRatings", views.CourseRatingViewSet)
+
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [path("api/v1/qcumber/", include(router.urls))]

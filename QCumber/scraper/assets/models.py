@@ -112,7 +112,7 @@ class LearningHours(models.Model):
     learning_hours = models.TextField(null=True)
 
     def __str__(self):
-        return self.learning_hours
+        return self.learning_hours or ""  ## This line without '' causes NONETYPE
 
 
 class CourseDescription(models.Model):
@@ -123,7 +123,7 @@ class CourseDescription(models.Model):
     description = models.TextField(null=True)
 
     def __str__(self):
-        return self.description + "-"
+        return self.description
 
 
 # actual representative tables
@@ -169,6 +169,39 @@ class CourseDetail(models.Model):
     )
 
     def __str__(self):
+        print(
+            (
+                    "Career \t"
+                    + self.career.__str__()
+                    + "\n"
+                    + "Units \t"
+                    + self.units.__str__()
+                    + "\n"
+                    + "Grading Basis \t"
+                    + self.grading_basis.__str__()
+                    + "\n"
+                    + "Course Components \t"
+                    + self.course_components.__str__()
+                    + "\n"
+                    + "Campus \t"
+                    + self.campus.__str__()
+                    + "\n"
+                    + "Academic Group \t"
+                    + self.academic_group.__str__()
+                    + "\n"
+                    + "Academic Organization \t"
+                    + self.academic_organization.__str__()
+                    + "\n"
+                    + "Enrollment Information \t"
+                    + self.enrollment.__str__()
+                    + "\n"
+                    + "Learning Hours \t"
+                    + self.learning_hours.__str__()
+                    + "\n"
+                    + "Description \t"
+                    + self.description.__str__()
+            )
+        )
         return (
                 "Career \t"
                 + self.career.__str__()
@@ -218,9 +251,24 @@ class Course(models.Model):
     name = models.CharField(max_length=128)
 
     # Multiple courses can share the same details? This can be changed to OneToOneField.
-    details = models.ForeignKey(CourseDetail, on_delete=models.CASCADE)
+    details = models.OneToOneField(CourseDetail, on_delete=models.CASCADE)
 
     def __str__(self):
+        print(
+            (
+                    "Subject \t"
+                    + self.subject.__str__()
+                    + "\n"
+                    + "Number \t"
+                    + self.number.__str__()
+                    + "\n"
+                    + "Name \t"
+                    + self.name.__str__()
+                    + "\n"
+                    + "Detail \t ---------------- \n"
+                    + self.details.__str__()
+            )
+        )
         return (
                 "Subject \t"
                 + self.subject.__str__()
@@ -245,3 +293,30 @@ class Log(models.Model):
     source = models.CharField(max_length=128)
     type = models.CharField(max_length=32)
     message = models.TextField()
+
+
+class CourseRating(models.Model):
+    """
+    This is the model for reviews and comments on the course
+
+    Relations:
+    Each course have multiple CourseReviews
+    CourseReview <- foreign key -> Course
+    Each course can have only one star rating
+    One on one relation
+
+    E.g.
+    "course_review": "This Queen's Course is just perfect",
+    """
+
+    course_review = models.TextField(null=True)
+    star_ratings = models.SmallIntegerField()
+    # where do we need the star rating
+    course = models.ForeignKey(Course, on_delete=models.SET_NULL, blank=True, null=True)
+
+    # Be very careful on the comments we don't want the comments to lose
+
+    # Now here we also want to relate to User model
+
+    def __str__(self):
+        return self.course_review
