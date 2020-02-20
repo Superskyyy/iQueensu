@@ -52,19 +52,21 @@ INSTALLED_APPS = [
     "django_filters",
     "corsheaders",
 ]
-"""
 
-# apps for auth purposes
 INSTALLED_APPS += [
-    'rest_framework.authtoken',
-    'rest_auth',
-    'django.contrib.sites',
-    'allauth',
-    'allauth.account',
-    'rest_auth.registration',
-    'QUser',
+    'djoser'
 ]
-"""
+
+# # apps for auth purposes
+# INSTALLED_APPS += [
+#     'rest_framework.authtoken',
+#     'rest_auth',
+#     'django.contrib.sites',
+#     'allauth',
+#     'allauth.account',
+#     'rest_auth.registration',
+#     'QUser',
+# ]
 
 # app for Qcumber
 INSTALLED_APPS += ["QCumber"]
@@ -178,6 +180,16 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 10
 }
 """
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
+
+SIMPLE_JWT = {
+   'AUTH_HEADER_TYPES': ('JWT',),
+}
 
 REST_API_ADDRESS = "qapi_v0"
 
