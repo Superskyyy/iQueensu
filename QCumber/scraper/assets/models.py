@@ -5,6 +5,9 @@ Only Course and CourseDetails are serialized.
 import uuid
 
 from django.db import models
+import datetime
+from django.core.validators import MaxValueValidator, MinValueValidator
+
 
 
 # Create your models here.
@@ -308,6 +311,25 @@ class CourseRating(models.Model):
     E.g.
     "course_review": "This Queen's Course is just perfect",
     """
+    # the semester of the class
+    year = models.IntegerField(validators=[MinValueValidator(2014), MaxValueValidator(datetime.date.today().year + 1)],
+                               default=datetime.date.today().year)
+    TERM_IN_SCHOOL_CHOICES = [('FALL', "Fall"), ('WINTER', "Winter"), ('SUMMER', "Summer")]
+    term = models.CharField(
+        max_length=50,
+        choices=TERM_IN_SCHOOL_CHOICES,
+        default='FALL',
+    )
+
+    # professor (display the profs in the specific faculty), or just write down the name
+    # PROF_CHOICES = [('SELECT', "Please select"), ('YUANTIAN', "Yuan Tian"), ('TINGHU', "Ting Hu")]
+    # prof = models.CharField(
+    #     max_length=50,
+    #     choices=PROF_CHOICES,
+    #     default='SELECT',
+    #     blank=True,
+    # )
+    prof = models.CharField(max_length=128, blank=True)
 
     course_review = models.TextField(null=True)
     star_ratings = models.SmallIntegerField()
@@ -320,3 +342,4 @@ class CourseRating(models.Model):
 
     def __str__(self):
         return self.course_review
+

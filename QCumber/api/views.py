@@ -15,6 +15,7 @@ from QCumber.api.serializers import (
 )
 from QCumber.api.serializers import CourseSimpleSerializer
 from QCumber.scraper.assets.models import Course, CourseDetail, CourseRating
+from django.db.models import Avg
 
 
 # https://django-filter.readthedocs.io/en/latest/guide/rest_framework.html
@@ -53,6 +54,7 @@ class CourseRatingViewSet(viewsets.ModelViewSet):
     """
 
     queryset = CourseRating.objects.all()
+    rating = queryset.aggregate(Avg('star_ratings'))
     serializer_class = CourseRatingSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = []
