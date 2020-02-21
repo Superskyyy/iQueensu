@@ -63,6 +63,9 @@ class CourseRatingSerializer(serializers.HyperlinkedModelSerializer):
             "id",
             "course_review",
             "star_ratings",
+            "year",
+            "term",
+            "prof",
             # "course",
         )
 

@@ -39,7 +39,7 @@ class CourseRatingInline(admin.TabularInline):
 
 @admin.register(CourseRating)
 class CourseRatingAdmin(admin.ModelAdmin):
-    list_display = ("course_review", "star_ratings")
+    list_display = ("course_review", "star_ratings", "year", "term", "prof")
 
 
 @admin.register(Course)
