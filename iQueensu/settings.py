@@ -87,12 +87,16 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
 """
 if LOCAL_DEBUG:
     MIDDLEWARE = [
         "corsheaders.middleware.CorsMiddleware",
         "django.middleware.common.CommonMiddleware",
     ]
+
+
+# 730cc199a04d792a9f77046c59edf6a73a30a135
 
 """
 

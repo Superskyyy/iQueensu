@@ -27,6 +27,7 @@ pylint = "*"
 pipfile = "*"
 pre-commit = ">=2.0.0"
 django-filter = "*"
+beautifulsoup4 = "*"
 
 [dev-packages]
 
