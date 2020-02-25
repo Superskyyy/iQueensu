@@ -2,6 +2,7 @@
 This is a panel for the admin page of QCumber applications
 """
 import json
+import os
 
 from django.conf.urls import url
 from django.contrib import admin
@@ -34,11 +35,17 @@ class CourseDetailAdmin(admin.ModelAdmin):
 
 
 class CourseRatingInline(admin.TabularInline):
+    """
+    Course Rating inline class
+    """
     model = CourseRating
 
 
 @admin.register(CourseRating)
 class CourseRatingAdmin(admin.ModelAdmin):
+    """
+    Simple admin
+    """
     list_display = ("course_review", "star_ratings", "year", "term", "prof")
 
 
@@ -56,9 +63,15 @@ class CourseAdmin(admin.ModelAdmin):
     ]
 
     def get_career(self, obj):
+        """
+        get career from obj
+        """
         return obj.details.career.career
 
     def get_urls(self):
+        """
+        generate urls
+        """
         urls = super().get_urls()
         my_urls = [
             path("spider-username/<slug:username>/", self.set_credentials),
@@ -113,7 +126,7 @@ class CourseAdmin(admin.ModelAdmin):
         # try:
         self.message_user(request, "Scraper start triggered")
 
-        Spider().scraper_start()
+        Spider.scraper_start()
         # except:
         print("Scraper failed")
 
@@ -128,5 +141,7 @@ class CourseAdmin(admin.ModelAdmin):
         :param request:
         :return:
         """
+        os.environ["stop_scraper"] = "1"
+
         self.message_user(request, "Scraper terminated - stub message")
         return HttpResponseRedirect("../")

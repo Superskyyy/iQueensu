@@ -45,7 +45,7 @@ except ModuleNotFoundError as error:
     print(
         """
         Please copy QCumber/scraper/assets/settings_example.py as settings.py in the same folder,
-        and edit the settings as instructed in the file. 
+        and edit the settings as instructed in the file.
         #Notice, settings.py is ignored by .gitignore file, everything in that file WILL BE LOST in CVS.
     """
     )
@@ -165,6 +165,7 @@ class Spider:
             # first get a list of subject full names
             counter = 0
             subject_full_names = []
+            time.sleep(3)
 
             while True:
                 try:
@@ -204,6 +205,7 @@ class Spider:
                     "CRSE_TITLE$" + str(course_nbr_id)
                 ).text
                 if "***" in course_title:
+                    # there are cases where multiple offer has no ***s
                     self.logger.info(
                         "Multiple offering course found, ignored for now. - Sky"
                     )
@@ -226,11 +228,20 @@ class Spider:
                 # FIXME SPIDER DIED at this line, investigation needed. after web_1
                 # 'course_title': 'Theatre Administration', 'course_number': '820'}
                 #  | QCumber_Scraper - 2020-02-02 17:45:24,481: course#: 101 course title: Astronomy I: Solar System
-                wait_quick.until(
-                    presence_of_element_located(
-                        (By.ID, "SSR_CRSE_OFF_VW_ACAD_CAREER$0")
+                try:
+                    wait_quick.until(
+                        presence_of_element_located(
+                            (By.ID, "SSR_CRSE_OFF_VW_ACAD_CAREER$0")
+                        )
                     )
-                )
+                except exceptions.TimeoutException:
+                    # this line seems useless
+                    wait_quick.until(
+                        presence_of_element_located(
+                            (By.ID, "DERIVED_SAA_CRS_RETURN_PB$163$")
+                        )
+                    )
+                    driver.find_element_by_id("DERIVED_SAA_CRS_RETURN_PB$163$").click()
 
                 detail_dict["subject_code"] = driver.find_element_by_id(
                     "DERIVED_CRSECAT_DESCR200"
@@ -339,6 +350,9 @@ class Spider:
                 # save data to django model
                 # print(detail_dict.values())
                 self.save_to_model(detail_dict)
+                if os.environ["stop_scraper"] == "1":
+                    os.environ["stop_scraper"] = 0
+                    sys.exit("Human interrupt")
 
                 course_nbr_id = course_nbr_id + 1
 
