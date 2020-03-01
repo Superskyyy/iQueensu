@@ -5,6 +5,7 @@ Only Course and CourseDetails are serialized.
 import uuid
 
 from django.db import models
+from django.contrib.postgres.fields import JSONField
 
 
 # Create your models here.
@@ -125,6 +126,11 @@ class CourseDescription(models.Model):
     def __str__(self):
         return self.description + "-"
 
+class GradeDistribution(models.Model):
+    name = models.CharField(max_length=200)
+    data = JSONField()
+    def __str__(self):
+        return self.name
 
 # actual representative tables
 class CourseDetail(models.Model):
@@ -168,6 +174,7 @@ class CourseDetail(models.Model):
         CourseDescription, on_delete=models.SET_NULL, blank=True, null=True
     )
 
+
     def __str__(self):
         return (
                 "Career \t"
@@ -199,6 +206,8 @@ class CourseDetail(models.Model):
                 + "\n"
                 + "Description \t"
                 + self.description.__str__()
+                + "grading_distribution \t"
+                + self.grading_distribution.__str__()
         )
 
 
@@ -236,6 +245,7 @@ class Course(models.Model):
         )
 
 
+
 class Log(models.Model):
     """
     Not serialized.
@@ -245,3 +255,5 @@ class Log(models.Model):
     source = models.CharField(max_length=128)
     type = models.CharField(max_length=32)
     message = models.TextField()
+
+
