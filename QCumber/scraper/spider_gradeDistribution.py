@@ -13,7 +13,8 @@ class Spider_grade:
             GradeDistribution.objects.all().delete()
         flush_db()
 
-    def get_web(self, currenturl):
+    @staticmethod
+    def get_web(currenturl):
         try:
             headers = {'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0'}
             res = requests.get(currenturl, headers=headers)
@@ -21,11 +22,11 @@ class Spider_grade:
             return res.content
         except requests.RequestException as e:
             print(e)
-            return
+            return e
 
-
-    def get_para(self, url):
-        text = self.get_web(url)
+    @staticmethod
+    def get_para(url):
+        text = Spider_grade().get_web(url)
         soup = BeautifulSoup(text, 'html.parser')
         para_list = soup.find_all("td")
 
@@ -42,7 +43,8 @@ class Spider_grade:
             i += 1
         return res
 
-    def save_dict(self, content):
+    @staticmethod
+    def save_dict(content):
         grade = {}
         for ele in content:
             grade['course_name'] = ele[0]
@@ -67,15 +69,13 @@ class Spider_grade:
             )
             gradeDistribution.save()
 
-
-
-    def main(self):
+    @staticmethod
+    def main():
         url = "http://www.qubirdhunter.com/?page_id=283#"
         content = Spider_grade().get_para(url)
         print(content)
         Spider_grade().save_dict(content)
 
-        return
-
-# a = Spider_grade()
-# a.main()
+if __name__ == "__main__":
+    a = Spider_grade()
+    a.main()
