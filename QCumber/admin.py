@@ -10,7 +10,7 @@ from django.urls import path, re_path
 
 from QCumber.scraper.assets.models import CourseDetail, Course, GradeDistribution
 from QCumber.scraper.spider import Spider
-from QCumber.scraper.spider_gradeDistribution import Spider_grade
+from QCumber.scraper.SpiderGrade import SpiderGrade
 
 
 @admin.register(CourseDetail)
@@ -35,6 +35,7 @@ class CourseDetailAdmin(admin.ModelAdmin):
 
 @admin.register(GradeDistribution)
 class GradeDistributionAdmin(admin.ModelAdmin):
+    """The Admin page for GradeDistribution"""
     # list_display = ("gradeDistribution")
     change_list_template = "spider_grade.html"
 
@@ -46,10 +47,14 @@ class GradeDistributionAdmin(admin.ModelAdmin):
         return my_urls + urls
 
     def set_scraper_grade_start(self, request):
+        """
+        Simply invokes the spider class
+        :param request: request is a request
+        :return: Http Redirect
+        """
         # try:
         self.message_user(request, "Scraper start triggered")
-
-        Spider_grade.main(self)
+        SpiderGrade.main()
         # except:
         print("Scraper failed")
 

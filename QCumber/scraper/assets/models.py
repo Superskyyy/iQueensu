@@ -127,6 +127,7 @@ class CourseDescription(models.Model):
         return self.description + "-"
 
 class GradeDistribution(models.Model):
+    """All grade distribution including following fields"""
     name = models.CharField(max_length=200)
     data = JSONField()
     def __str__(self):
@@ -206,8 +207,6 @@ class CourseDetail(models.Model):
                 + "\n"
                 + "Description \t"
                 + self.description.__str__()
-                + "grading_distribution \t"
-                + self.grading_distribution.__str__()
         )
 
 
@@ -255,5 +254,3 @@ class Log(models.Model):
     source = models.CharField(max_length=128)
     type = models.CharField(max_length=32)
     message = models.TextField()
-
-

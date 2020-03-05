@@ -138,6 +138,7 @@ class CourseSimpleSerializer(serializers.HyperlinkedModelSerializer):
         )
 
 class GradeDistributionSerializer(serializers.HyperlinkedModelSerializer):
+    """serializer for grade distribution"""
     class Meta:
         model = GradeDistribution
         fields = (
