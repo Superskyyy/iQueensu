@@ -321,11 +321,13 @@ class Spider:
 
                     detail_dict["course_description"] = description_raw
                 else:
-                    learning_hours_regex_queried.group().replace(
-                        "LEARNING HOURS ", ""
-                    )
                     detail_dict["course_description"] = description_raw.replace(learning_hours_regex_queried.group(),
                                                                                 "")
+                    fixed = learning_hours_regex_queried.group().replace(
+                        "LEARNING HOURS ", ""
+                    )
+                    detail_dict["learning_hours"] = fixed
+
                 detail_dict["course_title"] = course_title
                 detail_dict["course_number"] = course_nbr
 
