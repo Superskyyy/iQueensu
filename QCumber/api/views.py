@@ -12,11 +12,21 @@ from QCumber.api.serializers import (
     CourseSerializer,
     CourseDetailSerializer,
     CourseSimpleSerializer,
+    GradeDistributionSerializer
 )
-from QCumber.scraper.assets.models import Course, CourseDetail
+from QCumber.scraper.assets.models import Course, CourseDetail, GradeDistribution
 
 
 # https://django-filter.readthedocs.io/en/latest/guide/rest_framework.html
+
+class GradeDistributionViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows GradeDistribution to be viewed or edited.
+    This viewset should never be queried in production
+    as it uses an unoptimized search filter.
+    """
+    queryset = GradeDistribution.objects.all()
+    serializer_class = GradeDistributionSerializer
 
 
 class CourseDetailViewSet(viewsets.ModelViewSet):
