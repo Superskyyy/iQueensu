@@ -31,7 +31,7 @@ DEBUG = True
 # Turn LOCAL_DEBUG on if you want to debug frontend using npm start
 
 my_os = platform.system()
-LOCAL_DEBUG = False
+LOCAL_DEBUG = True
 if my_os != "Linux":
     LOCAL_DEBUG = True
 
@@ -90,6 +90,17 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
+"""
+if LOCAL_DEBUG:
+    MIDDLEWARE = [
+        "corsheaders.middleware.CorsMiddleware",
+        "django.middleware.common.CommonMiddleware",
+    ]
+
+
+# 730cc199a04d792a9f77046c59edf6a73a30a135
+
+"""
 
 ROOT_URLCONF = "iQueensu.urls"
 
