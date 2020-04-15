@@ -10,7 +10,7 @@ from django.urls import path, re_path
 
 from QCumber.scraper.assets.models import CourseDetail, Course, GradeDistribution
 from QCumber.scraper.spider import Spider
-from QCumber.scraper.SpiderGrade import SpiderGrade
+from QCumber.scraper.spider_grade import SpiderGrade
 
 
 @admin.register(CourseDetail)

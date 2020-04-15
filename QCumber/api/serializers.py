@@ -144,4 +144,5 @@ class GradeDistributionSerializer(serializers.HyperlinkedModelSerializer):
         fields = (
             "name",
             "data",
+            "uuid_text"
         )

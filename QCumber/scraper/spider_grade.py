@@ -1,7 +1,8 @@
 """scrape grade distribution on qubirdhunter"""
 import requests
 from bs4 import BeautifulSoup
-from QCumber.scraper.assets.models import GradeDistribution
+
+from QCumber.scraper.assets.models import GradeDistribution, Course
 
 
 class SpiderGrade:
@@ -34,7 +35,7 @@ class SpiderGrade:
     @staticmethod
     def get_para(url):
         """use beautifulsoup to extract the table"""
-        text = SpiderGrade().get_web(url)
+        text = SpiderGrade.get_web(url)
         soup = BeautifulSoup(text, 'html.parser')
         para_list = soup.find_all("td")
 
@@ -52,10 +53,34 @@ class SpiderGrade:
         return res
 
     @staticmethod
+    def uuid_name(course_name):
+        """retrieve uuid from Course table"""
+        namelist = course_name.split()
+        subject_code = namelist[0]
+        course_num = namelist[1]
+        # print(namelist)
+        uuid = Course.objects.filter(subject__code__iexact=subject_code, number__iexact=course_num).values("uuid")
+        # print(uuid)
+        if len(uuid) == 0:
+            return "pp"
+        return str(uuid[0]['uuid'])
+
+    @staticmethod
     def save_dict(content):
         """save data as dictionary"""
         grade = {}
+        grade['course_name'] = "AGHE 800"
+        grade['GPA'] = 3.5
+        uuid = SpiderGrade.uuid_name("AGHE 800")
+        grade_distribution = GradeDistribution.objects.create(
+            name=grade['course_name'], data=grade, uuid_text=uuid
+        )
+        grade_distribution.save()
+        grade = {}
         for ele in content:
+            if ele[0] == "Course":
+                continue
+            uuid = SpiderGrade.uuid_name(ele[0])
             grade['course_name'] = ele[0]
             grade['description'] = ele[1]
             grade['enrollment_num'] = ele[2]
@@ -74,7 +99,7 @@ class SpiderGrade:
             grade['F'] = ele[15]
             grade['GPA'] = ele[16]
             grade_distribution = GradeDistribution.objects.create(
-                name=grade['course_name'], data=grade
+                name=grade['course_name'], data=grade, uuid_text=uuid
             )
             grade_distribution.save()
 
@@ -83,8 +108,8 @@ class SpiderGrade:
         """main function"""
         url = "http://www.qubirdhunter.com/?page_id=283#"
         content = SpiderGrade().get_para(url)
-        print(content)
-        SpiderGrade().save_dict(content)
+        # print(content)
+        SpiderGrade.save_dict(content)
 
 
 if __name__ == "__main__":

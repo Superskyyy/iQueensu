@@ -4,8 +4,8 @@ Only Course and CourseDetails are serialized.
 """
 import uuid
 
-from django.db import models
 from django.contrib.postgres.fields import JSONField
+from django.db import models
 
 
 # Create your models here.
@@ -130,7 +130,9 @@ class GradeDistribution(models.Model):
     """All grade distribution including following fields"""
     name = models.CharField(max_length=200)
     data = JSONField()
+    uuid_text = models.TextField(null=True)
     def __str__(self):
+        # return self.name + '\t' + self.uuid_text
         return self.name
 
 # actual representative tables
