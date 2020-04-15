@@ -9,7 +9,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
     """migration"""
     dependencies = [
-        ('QCumber', '0006_auto_20200301_1611'),
+        ('QCumber', '0006_grade_distribution'),
     ]
 
     operations = [
