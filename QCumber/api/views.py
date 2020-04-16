@@ -27,7 +27,12 @@ class GradeDistributionViewSet(viewsets.ModelViewSet):
     """
     queryset = GradeDistribution.objects.all()
     serializer_class = GradeDistributionSerializer
-
+    filter_backends = [filters.SearchFilter]
+    search_fields = [
+        "name",
+        "data",
+        "uuid_text"
+    ]
 
 class CourseDetailViewSet(viewsets.ModelViewSet):
     """
