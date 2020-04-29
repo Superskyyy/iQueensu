@@ -2,13 +2,16 @@
 This is a panel for the admin page of QCumber applications
 """
 import json
+import os
 
 from django.conf.urls import url
 from django.contrib import admin
 from django.http import HttpResponseRedirect
 from django.urls import path, re_path
 
-from QCumber.scraper.assets.models import CourseDetail, Course, GradeDistribution
+
+from QCumber.scraper.assets.models import CourseDetail, Course, GradeDistribution, CourseRating
+
 from QCumber.scraper.spider import Spider
 from QCumber.scraper.spider_grade import SpiderGrade
 
@@ -63,17 +66,44 @@ class GradeDistributionAdmin(admin.ModelAdmin):
         return HttpResponseRedirect("../")
 
 
+class CourseRatingInline(admin.TabularInline):
+    """
+    Course Rating inline class
+    """
+    model = CourseRating
+
+
+@admin.register(CourseRating)
+class CourseRatingAdmin(admin.ModelAdmin):
+    """
+    Simple admin
+    """
+    list_display = ("course_review", "star_ratings", "year", "term", "prof")
+
+
 @admin.register(Course)
 class CourseAdmin(admin.ModelAdmin):
     """
     The Admin page for Courses
     """
 
-    list_display = ("subject", "number", "name", "details")
+    list_display = ("subject", "number", "name", "get_career", "details")
     list_filter = ("number",)
     change_list_template = "spider_operations.html"
+    inlines = [  # This allows us to edit the following in course admin
+        CourseRatingInline
+    ]
+
+    def get_career(self, obj):
+        """
+        get career from obj
+        """
+        return obj.details.career.career
 
     def get_urls(self):
+        """
+        generate urls
+        """
         urls = super().get_urls()
         my_urls = [
             path("spider-username/<slug:username>/", self.set_credentials),
@@ -128,7 +158,7 @@ class CourseAdmin(admin.ModelAdmin):
         # try:
         self.message_user(request, "Scraper start triggered")
 
-        Spider().scraper_start()
+        Spider.scraper_start()
         # except:
         print("Scraper failed")
 
@@ -143,5 +173,7 @@ class CourseAdmin(admin.ModelAdmin):
         :param request:
         :return:
         """
+        os.environ["stop_scraper"] = "1"
+
         self.message_user(request, "Scraper terminated - stub message")
         return HttpResponseRedirect("../")
