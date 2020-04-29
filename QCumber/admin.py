@@ -9,8 +9,11 @@ from django.contrib import admin
 from django.http import HttpResponseRedirect
 from django.urls import path, re_path
 
-from QCumber.scraper.assets.models import CourseDetail, Course, CourseRating
+
+from QCumber.scraper.assets.models import CourseDetail, Course, GradeDistribution, CourseRating
+
 from QCumber.scraper.spider import Spider
+from QCumber.scraper.spider_grade import SpiderGrade
 
 
 @admin.register(CourseDetail)
@@ -32,6 +35,35 @@ class CourseDetailAdmin(admin.ModelAdmin):
         "description",
     )
     list_filter = ("units", "career", "campus")
+
+@admin.register(GradeDistribution)
+class GradeDistributionAdmin(admin.ModelAdmin):
+    """The Admin page for GradeDistribution"""
+    # list_display = ("gradeDistribution")
+    change_list_template = "spider_grade.html"
+
+    def get_urls(self):
+        urls = super().get_urls()
+        my_urls = [
+            url("grade-scraper-start/", self.set_scraper_grade_start),
+        ]
+        return my_urls + urls
+
+    def set_scraper_grade_start(self, request):
+        """
+        Simply invokes the spider class
+        :param request: request is a request
+        :return: Http Redirect
+        """
+        # try:
+        self.message_user(request, "Scraper start triggered")
+        SpiderGrade.main()
+        # except:
+        print("Scraper failed")
+
+        self.message_user(request, "Scraper has completed")
+
+        return HttpResponseRedirect("../")
 
 
 class CourseRatingInline(admin.TabularInline):

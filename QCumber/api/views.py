@@ -11,15 +11,33 @@ from rest_framework import viewsets
 from QCumber.api.serializers import (
     CourseSerializer,
     CourseDetailSerializer,
+    CourseSimpleSerializer,
+    GradeDistributionSerializer,
     CourseRatingSerializer,
 )
-from QCumber.api.serializers import CourseSimpleSerializer
-from QCumber.scraper.assets.models import Course, CourseDetail, CourseRating
+
+from QCumber.scraper.assets.models import Course, CourseDetail, CourseRating, GradeDistribution
 from django.db.models import Avg
+
+
 
 
 # https://django-filter.readthedocs.io/en/latest/guide/rest_framework.html
 
+class GradeDistributionViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows GradeDistribution to be viewed or edited.
+    This viewset should never be queried in production
+    as it uses an unoptimized search filter.
+    """
+    queryset = GradeDistribution.objects.all()
+    serializer_class = GradeDistributionSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = [
+        "name",
+        "data",
+        "uuid_text"
+    ]
 
 class CourseDetailViewSet(viewsets.ModelViewSet):
     """

@@ -4,6 +4,7 @@ Only Course and CourseDetails are serialized.
 """
 import uuid
 
+from django.contrib.postgres.fields import JSONField
 from django.db import models
 import datetime
 from django.core.validators import MaxValueValidator, MinValueValidator
@@ -22,7 +23,7 @@ class CareerPossibleValues(models.Model):
     career = models.CharField(max_length=128)
 
     def __str__(self):
-        return self.career
+        return self.career or 'null'
 
 
 class SubjectPossibleValues(models.Model):
@@ -34,7 +35,7 @@ class SubjectPossibleValues(models.Model):
     name = models.CharField(max_length=128)
 
     def __str__(self):
-        return self.code + " - " + self.name
+        return (self.code + " - " + self.name) or 'null'
 
 
 class CampusPossibleValues(models.Model):
@@ -45,7 +46,7 @@ class CampusPossibleValues(models.Model):
     campus = models.CharField(max_length=128)
 
     def __str__(self):
-        return self.campus
+        return self.campus or 'null'
 
 
 class GradingPossibleValues(models.Model):
@@ -56,7 +57,7 @@ class GradingPossibleValues(models.Model):
     grading = models.CharField(max_length=128)
 
     def __str__(self):
-        return self.grading
+        return self.grading or 'null'
 
 
 class AcademicGroupPossibleValues(models.Model):
@@ -67,7 +68,7 @@ class AcademicGroupPossibleValues(models.Model):
     academic_group = models.CharField(max_length=128)
 
     def __str__(self):
-        return self.academic_group
+        return self.academic_group or 'null'
 
 
 class AcademicOrganizationPossibleValues(models.Model):
@@ -78,7 +79,7 @@ class AcademicOrganizationPossibleValues(models.Model):
     academic_organization = models.CharField(max_length=128)
 
     def __str__(self):
-        return self.academic_organization
+        return self.academic_organization or 'null'
 
 
 class Components(models.Model):
@@ -89,7 +90,7 @@ class Components(models.Model):
     description = models.TextField(null=True)
 
     def __str__(self):
-        return self.description
+        return self.description or 'null'
 
 
 class EnrollmentInformation(models.Model):
@@ -103,7 +104,7 @@ class EnrollmentInformation(models.Model):
     enroll_drop_consent = models.TextField(null=True)
 
     def __str__(self):
-        return self.enroll_add_consent + "-" + self.enroll_drop_consent
+        return (self.enroll_add_consent + "-" + self.enroll_drop_consent) or 'null'
 
 
 class LearningHours(models.Model):
@@ -115,7 +116,9 @@ class LearningHours(models.Model):
     learning_hours = models.TextField(null=True)
 
     def __str__(self):
+
         return self.learning_hours or ""  ## This line without '' causes NONETYPE
+
 
 
 class CourseDescription(models.Model):
@@ -126,8 +129,18 @@ class CourseDescription(models.Model):
     description = models.TextField(null=True)
 
     def __str__(self):
-        return self.description
 
+        return self.description + "-" or 'null'
+
+
+class GradeDistribution(models.Model):
+    """All grade distribution including following fields"""
+    name = models.CharField(max_length=200)
+    data = JSONField()
+    uuid_text = models.TextField(null=True)
+    def __str__(self):
+        # return self.name + '\t' + self.uuid_text
+        return self.name
 
 # actual representative tables
 class CourseDetail(models.Model):
@@ -170,6 +183,7 @@ class CourseDetail(models.Model):
     description = models.ForeignKey(
         CourseDescription, on_delete=models.SET_NULL, blank=True, null=True
     )
+
 
     def __str__(self):
         print(
@@ -285,6 +299,7 @@ class Course(models.Model):
                 + "Detail \t ---------------- \n"
                 + self.details.__str__()
         )
+
 
 
 class Log(models.Model):

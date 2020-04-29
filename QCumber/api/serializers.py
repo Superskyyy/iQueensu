@@ -5,7 +5,10 @@ from django.utils.text import Truncator
 from rest_framework import serializers
 
 # get all models class
-from QCumber.scraper.assets.models import CourseDetail, Course, CourseRating
+
+from QCumber.scraper.assets.models import CourseDetail, Course, CourseRating, GradeDistribution
+
+
 
 
 class CourseDetailSerializer(serializers.HyperlinkedModelSerializer):
@@ -161,4 +164,14 @@ class CourseSimpleSerializer(serializers.HyperlinkedModelSerializer):
             "subject_name",
             "subject_code",
             "course_details",
+        )
+
+class GradeDistributionSerializer(serializers.HyperlinkedModelSerializer):
+    """serializer for grade distribution"""
+    class Meta:
+        model = GradeDistribution
+        fields = (
+            "name",
+            "data",
+            "uuid_text"
         )

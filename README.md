@@ -75,7 +75,7 @@ Fill in corresponding Queen's SSO credentials. This step is crucial to the prope
         
         [Windows Git Bash]> winpty docker-compose run web python manage.py createsuperuser
         
-        [Unix]> docker-compose run web python manage.py createsuperuser
+        [Unix & Powershell]> docker-compose run web python manage.py createsuperuser
         
         docker-compose build
         
@@ -84,6 +84,19 @@ Fill in corresponding Queen's SSO credentials. This step is crucial to the prope
 
         ```
 - To pull from remote image.. Implementing
+
+- Then, to test the backend, you run the scraper by entering the url given to you by the console:
+
+0.0.0.0:8000/admin/course or 127.0.0.1:8000/admin/courses or Localhost:8000/admins/courses
+
+Enter your username and password to SOLUS and Start Scraper.
+DO NOT REFRESH THE START-SCRAPER-PAGE 
+You can see in the docker-console that the scraper is running.
+
+API VIEWs:
+
+Go to /api/v1/qcumber/
+
 
 <a name="Contributors"/><br/>
 ## Contributors
